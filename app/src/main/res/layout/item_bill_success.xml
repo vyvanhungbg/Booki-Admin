@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_8dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_6dp"
+        app:cardCornerRadius="@dimen/corners_5dp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_8dp"
+            android:padding="@dimen/margin_12dp">
+
+
+            <TextView
+                android:id="@+id/title_bill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textSize="@dimen/text_size_16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/text_some_thing" />
+
+            <TextView
+                android:id="@+id/content_bill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_6dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="@dimen/text_size_16sp"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_bill"
+                tools:text="@string/text_some_thing" />
+
+            <TextView
+                android:id="@+id/text_view_time_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_6dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/content_bill"
+                tools:text="@string/text_some_thing" />
+
+            <TextView
+                android:id="@+id/text_view_time_delivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_6dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_time_confirm"
+                tools:text="@string/text_some_thing" />
+
+            <TextView
+                android:id="@+id/text_view_time_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_6dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_time_delivery"
+                tools:text="@string/text_some_thing" />
+
+            <ImageView
+                android:id="@+id/image_view_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginBottom="@dimen/margin_6dp"
+                android:src="@drawable/ic_baseline_account_balance_wallet_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_time_done" />
+
+            <TextView
+                android:id="@+id/title_total_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_12dp"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginBottom="@dimen/margin_4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_view_wallet"
+                app:layout_constraintTop_toBottomOf="@id/text_view_time_done"
+                tools:text="@string/text_some_thing" />
+
+
+            <TextView
+                android:id="@+id/text_view_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_12dp"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:background="@color/main"
+                android:paddingLeft="@dimen/margin_12dp"
+                android:paddingTop="@dimen/margin_8dp"
+                android:paddingRight="@dimen/margin_12dp"
+                android:paddingBottom="@dimen/margin_8dp"
+                android:text="@string/text_view_detail"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_view_time_done" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

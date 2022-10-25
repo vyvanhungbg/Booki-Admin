@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">BookShop</string>
+    <string name="title_home">Trang chủ</string>
+    <string name="title_discount">Mã voucher</string>
+    <string name="title_bill">Đơn hàng</string>
+    <string name="title_account">Tài khoản</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="error_call_api">Có lỗi xảy ra vui lòng thử lại!</string>
+    <string name="text_login_now">đăng nhập\nngay</string>
+    <string name="text_password">Mật khẩu</string>
+    <string name="text_email">Email</string>
+    <string name="text_login_OTP">Đăng nhập OTP</string>
+    <string name="text_forgot_password">Quên mật khẩu?</string>
+    <string name="text_login">đăng nhập</string>
+    <string name="text_hotline_support">Liên hệ hỗ trợ</string>
+    <string name="text_title_forgot_password">quên mật\nkhẩu</string>
+    <string name="text_confirm">Xác nhận</string>
+    <string name="text_suggest_forgot_password">Vui lòng nhập đúng email đã đăng ký !</string>
+    <string name="text_error_validate_email">Email không hợp lệ !</string>
+    <string name="text_error_validate_password">Vui lòng nhập mật khẩu !</string>
+    <string name="text_second">%d s</string>
+    <string name="text_wait_for_send_request_forgot_password">Yêu cầu đã được gửi đi. Vui gửi lại sau </string>
+    <string name="text_some_thing">Some thing !</string>
+    <string name="text_default_price">0đ</string>
+    <string name="title_notification">Thông báo</string>
+    <string name="title_statistical">Thống kê</string>
+    <string name="title_change_password">Thay đổi mật khẩu</string>
+    <string name="title_help">Trợ giúp</string>
+    <string name="text_logout">Đăng xuất</string>
+    <string name="title_alert_relogin">Phiên đăng nhập đã hết hạn</string>
+    <string name="mess_alert_relogin">Vui lòng đăng nhập lại để tiếp tục !</string>
+    <string name="text_mess_login_success">Đăng nhập thành công</string>
+    <string name="text_edit">chỉnh sửa</string>
+    <string name="text_cancel">Hủy bỏ</string>
+    <string name="text_title_bill"># %d | Đặt hàng lúc %s</string>
+    <string name="text_content_bill">%s ..(%d sản phẩm)</string>
+    <string name="text_content_discount">Mã %s</string>
+    <string name="text_confirm_failed">Xác nhận đơn hàng thất bại</string>
+    <string name="text_confirm_success">Xác nhận đơn hàng mã %d thành công</string>
+    <string name="text_destroy_failed">Hủy bỏ đơn hàng thất bại</string>
+    <string name="text_destroy_success">Đơn hủy đơn hàng mã %d</string>
+    <string name="text_delivery_success">Xác nhận đơn hàng mã %d được vận chuyển</string>
+    <string name="text_bill_delivery_done_success">Xác nhận đơn hàng mã %d giao thành công</string>
+    <string name="text_get_bill_failed">Có lỗi xảy ra khi lấy đơn hàng</string>
+    <string name="text_get_discount_failed">Có lỗi xảy ra khi lấy mã giảm giá</string>
+    <string name="text_time_confirm">Xác nhận lúc : %s</string>
+    <string name="text_time_start">Bắt đầu lúc  : %s</string>
+    <string name="text_time_end">Kết thúc lúc : %s</string>
+    <string name="text_amount">Số lượng %d</string>
+    <string name="text_time_delivery">Giao vận lúc : %s</string>
+    <string name="text_time_done">Hoàn thành lúc : %s</string>
+    <string name="text_delivery">Vận chuyển</string>
+    <string name="title_alert_destroy_bill">Vui lòng cập nhật lí do đơn hàng bị hủy</string>
+    <string name="text_reason_default_confirm_destroy_bill">Người bán không kịp chuẩn bị hàng !</string>
+    <string name="text_normal">Mặc định</string>
+    <string name="text_reason_default_pending_destroy_bill">Mặt hàng đã hết !</string>
+    <string name="text_view_detail">Xem chi tiết</string>
+    <string name="text_end_list">Hết</string>
+    <string name="title_bill_detail">Thông tin đơn hàng</string>
+    <string name="text_info_delivery">Thông tin vận chuyển</string>
+    <string name="text_location_delivery">Địa chỉ nhận hàng</string>
+    <string name="text_total_price">Tổng tiền hàng</string>
+    <string name="text_ship_price">Phí vận chuyển</string>
+    <string name="text_view_voucher_ship">Giảm giá phí vận chuyển</string>
+    <string name="text_view_voucher_shop">Giảm giá từ cửa hàng</string>
+    <string name="text_view_total_bill">Thành tiền</string>
+    <string name="text_view_time_order">Thời gian đặt hàng</string>
+    <string name="text_view_time_confirm">Thời gian xác nhận</string>
+    <string name="text_view_time_delivery">Thời gian vận đơn</string>
+    <string name="text_view_time_success">Thời gian hoàn thành</string>
+    <string name="text_contact_customer">Liên hệ khách hàng</string>
+    <string name="text_order">Đã đặt</string>
+    <string name="mess_list_bill_empty">Hiện tại không có đơn nào trong trạng thái này !</string>
+    <string name="mess_list_discount_empty">Hiện tại không có mã giảm giá nào trong trạng thái này !</string>
+    <string name="permission_call_denied">Vui lòng cấp lại quyền gọi điện trong phần cài đặt</string>
+
+
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="list_items_destroy_bill">
+        <item>Người mua không nhận hàng</item>
+        <item>Đơn hàng bị thất lạc</item>
+        <item>Giao không thành công </item>
+    </string-array>
+
+    <string-array name="list_type_of_discount">
+        <item>Đang chạy</item>
+        <item>Đã hết hạn</item>
+        <item>Đã hủy</item>
+        <item>Đang lên lịch</item>
+    </string-array>
+</resources>
