@@ -4,8 +4,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.atom.android.bookshop.R
 import com.atom.android.bookshop.base.BaseFragment
 import com.atom.android.bookshop.data.model.Discount
@@ -13,6 +11,7 @@ import com.atom.android.bookshop.data.repository.DiscountRepository
 import com.atom.android.bookshop.data.source.remote.api.ApiConstants
 import com.atom.android.bookshop.data.source.remote.discount.DiscountRemoteDataSource
 import com.atom.android.bookshop.databinding.FragmentDiscountBinding
+import com.atom.android.bookshop.ui.discount.adddiscount.CreateDiscountFragment
 
 typealias DefaultSource = com.google.android.material.R.layout
 
@@ -41,24 +40,12 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
 
 
     override fun initView() {
-        binding?.recyclerviewDiscount?.apply {
-            adapter = listAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                    val sizeData = listAdapter.itemCount - 1
-                    if (linearLayoutManager != null &&
-                        linearLayoutManager.findLastCompletelyVisibleItemPosition() == sizeData
-                    ) {
-                        currentPage += 1
-                        binding?.progressLoadingMore?.isVisible = true
-                        discountPresenter.getDiscount(context, currentPage, type)
-                    }
-                }
-            })
+        binding?.recyclerviewDiscount?.adapter = listAdapter
+        listAdapter.loadMore(binding?.recyclerviewDiscount) {
+            currentPage += 1
+            binding?.progressLoadingMore?.isVisible = true
+            discountPresenter.getDiscount(context, currentPage, type)
         }
-
         context?.let {
             val listOptionDropDownType: Array<String> =
                 it.resources.getStringArray(R.array.list_type_of_discount)
@@ -84,7 +71,7 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
                 ) {
                     type = position
                     currentPage = 1
-                    listAdapter.clearAll()
+                    listAdapter.submitList(mutableListOf())
                     discountPresenter.getDiscount(context, currentPage, type)
                 }
 
@@ -92,6 +79,9 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
 
                 }
             }
+        binding?.imgAdd?.setOnClickListener {
+            navigateToCreateFragment()
+        }
     }
 
     override fun getDiscountSuccess(discounts: List<Discount>) {
@@ -100,7 +90,9 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
             binding?.textViewGetDiscountFailed?.text =
                 context?.getString(R.string.mess_list_discount_empty)
         } else {
-            listAdapter.addList(discounts)
+            val newList = listAdapter.currentList.toMutableList()
+            newList.addAll(discounts)
+            listAdapter.submitList(newList)
             binding?.apply {
                 progressLoadingMore.isVisible = false
                 textViewGetDiscountFailed.isVisible = false
@@ -113,19 +105,18 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
         visibleError()
     }
 
-    override fun createDiscountSuccess(discount: Discount) {
-        //late impl
-    }
-
-    override fun createDiscountFailed(message: String?) {
-        //late impl
+    private fun navigateToCreateFragment() {
+        val fragment = CreateDiscountFragment()
+        val beginTransaction = activity?.supportFragmentManager?.beginTransaction()
+        beginTransaction?.replace(R.id.fragment_container, fragment)
+            ?.addToBackStack(null)?.commit()
     }
 
     private fun visibleError() {
         binding?.apply {
-            textViewGetDiscountFailed?.isVisible = true
-            recyclerviewDiscount?.isVisible = false
-            progressLoadingMore?.isVisible = false
+            textViewGetDiscountFailed.isVisible = true
+            recyclerviewDiscount.isVisible = false
+            progressLoadingMore.isVisible = false
         }
     }
 

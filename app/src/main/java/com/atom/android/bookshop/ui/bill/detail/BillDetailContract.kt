@@ -8,6 +8,7 @@ class BillDetailContract {
     interface View {
         fun getBillSuccess(bill: Bill)
         fun getBillFailed()
+        fun requestCallFailed(message: String?)
     }
 
     interface Presenter {

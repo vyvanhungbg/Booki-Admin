@@ -1,8 +1,6 @@
 package com.atom.android.bookshop.ui.bill.success
 
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.atom.android.bookshop.R
 import com.atom.android.bookshop.base.BaseFragment
 import com.atom.android.bookshop.data.model.Bill
@@ -14,6 +12,7 @@ import com.atom.android.bookshop.ui.bill.detail.BillDetailFragment
 class BillSuccessFragment :
     BaseFragment<FragmentBillSuccessBinding>(FragmentBillSuccessBinding::inflate),
     BillSuccessContract.View {
+
     private var currentPage = 1
     private val billSuccessPresenter by lazy {
         BillSuccessPresenter.getInstance(
@@ -24,7 +23,7 @@ class BillSuccessFragment :
         )
     }
 
-    val listAdapter = ListAdapterBillSuccess { bill: Bill ->
+    private val listAdapter = ListAdapterBillSuccess { bill: Bill ->
         run {
             navigateToDetailsFragment(bill)
         }
@@ -39,22 +38,10 @@ class BillSuccessFragment :
     }
 
     override fun initEvent() {
-        binding?.recyclerviewBillSuccess?.apply {
-            adapter = listAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                    val sizeData = listAdapter.itemCount - 1
-                    if (linearLayoutManager != null &&
-                        linearLayoutManager.findLastCompletelyVisibleItemPosition() == sizeData
-                    ) {
-                        currentPage += 1
-                        binding?.progressLoadingMore?.isVisible = true
-                        billSuccessPresenter.getBillSuccess(context, currentPage)
-                    }
-                }
-            })
+        listAdapter.loadMore(binding?.recyclerviewBillSuccess) {
+            currentPage += 1
+            binding?.progressLoadingMore?.isVisible = true
+            billSuccessPresenter.getBillSuccess(context, currentPage)
         }
     }
 
@@ -63,7 +50,9 @@ class BillSuccessFragment :
             visibleError()
             binding?.textViewGetBillFailed?.text = context?.getString(R.string.mess_list_bill_empty)
         } else {
-            listAdapter.addList(bill)
+            val newList = listAdapter.currentList.toMutableList()
+            newList.addAll(bill)
+            listAdapter.submitList(newList)
             binding?.progressLoadingMore?.isVisible = false
         }
     }
@@ -85,6 +74,10 @@ class BillSuccessFragment :
 
     override fun getBillFailed(message: String?) {
         visibleError()
+    }
+
+    fun updateNewBill(bill: Bill) {
+        listAdapter.addItem(bill)
     }
 
     companion object {

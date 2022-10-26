@@ -2,6 +2,7 @@ package com.atom.android.bookshop.ui.bill.detail
 
 import android.os.Bundle
 import androidx.core.view.isVisible
+import com.atom.android.bookshop.R
 import com.atom.android.bookshop.base.BaseFragment
 import com.atom.android.bookshop.data.model.Bill
 import com.atom.android.bookshop.data.model.OrderLine
@@ -9,6 +10,7 @@ import com.atom.android.bookshop.databinding.FragmentBillDetailBinding
 import com.atom.android.bookshop.ui.main.MainActivity
 import com.atom.android.bookshop.utils.Constants
 import com.atom.android.bookshop.utils.convertStrToMoney
+import com.atom.android.bookshop.utils.toast
 
 
 class BillDetailFragment :
@@ -17,15 +19,13 @@ class BillDetailFragment :
 
     private var bill: Bill? = null
     private val listAdapter = ListAdapterBillDetail { orderLine: OrderLine -> {} }
-    private val billDetailPresenter = BillDetailPresenter.getInstance(this)
+    private val billDetailPresenter by lazy { BillDetailPresenter.getInstance() }
     override fun initData() {
+        billDetailPresenter.setView(this)
         billDetailPresenter.getBill(arguments)
     }
 
     override fun initView() {
-        (activity as? MainActivity)?.let {
-            it.setVisibleNavigationBar(false)
-        }
         bill?.let {
             binding?.apply {
                 recyclerviewItem.adapter = listAdapter
@@ -34,7 +34,7 @@ class BillDetailFragment :
                 textTotalPrice.text = it.totalPriceOfItems().toString().convertStrToMoney()
                 textViewTotalBill.text = it.totalBill().toString().convertStrToMoney()
                 textViewPriceShip.text = it.shippingMethod.cost.toString().convertStrToMoney()
-                textViewInfoPhone.text = it.phone.toString()
+                textViewInfoPhone.text = it.phone
                 if (it.getTimeOrder() != Constants.DEFAULT_STRING) {
                     layoutTimeOrder.isVisible = true
                     textViewTimeOrder.text = it.getTimeOrder()
@@ -54,6 +54,9 @@ class BillDetailFragment :
                 listAdapter.submitList(it.orderLines)
             }
         }
+        (activity as? MainActivity)?.let {
+            it.setVisibleNavigationBar(false)
+        }
     }
 
     override fun initEvent() {
@@ -70,9 +73,21 @@ class BillDetailFragment :
         this.bill = bill
     }
 
+
     override fun getBillFailed() {
         binding?.textViewError?.isVisible = true
         binding?.layoutScrollView?.isVisible = false
+    }
+
+    override fun requestCallFailed(message: String?) {
+        context?.toast(R.string.text_error_request_call)
+    }
+
+    override fun onDestroy() {
+        (activity as? MainActivity)?.let {
+            it.setVisibleNavigationBar(true)
+        }
+        super.onDestroy()
     }
 
     companion object {

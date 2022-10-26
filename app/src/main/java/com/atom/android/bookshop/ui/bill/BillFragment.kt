@@ -23,9 +23,9 @@ class BillFragment : BaseFragment<FragmentBillBinding>(FragmentBillBinding::infl
 
     fun updateStatusBill(bill: Bill, status: Int) {
         when (status) {
-            ApiConstants.TYPEOFBILL.ACCEPT -> confirmFragment.listAdapter.addItem(bill)
-            ApiConstants.TYPEOFBILL.DELIVERY -> deliveryFragment.listAdapter.addItem(bill)
-            ApiConstants.TYPEOFBILL.SUCCESS -> successFragment.listAdapter.addItem(bill)
+            ApiConstants.TYPEOFBILL.ACCEPT -> confirmFragment.updateNewBill(bill)
+            ApiConstants.TYPEOFBILL.DELIVERY -> deliveryFragment.updateNewBill(bill)
+            ApiConstants.TYPEOFBILL.SUCCESS -> successFragment.updateNewBill(bill)
         }
     }
 

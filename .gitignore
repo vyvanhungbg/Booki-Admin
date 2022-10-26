@@ -66,8 +66,7 @@ fastlane/readme.md
 
 # Version control
 vcs.xml
-..sun-ci.yml
-.sun-ci.yml
+
 # lint
 lint/intermediates/
 lint/generated/

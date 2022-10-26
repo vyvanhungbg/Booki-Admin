@@ -24,6 +24,9 @@ object Constants {
     const val FORMAT_DATE_TIME = "dd-MM-yyyy '|' HH:mm:ss"
     const val FORMAT_DATE_TIME_INPUT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
     const val LAST_CHARACTER_TIME_UTC = "Z"
+    const val DEFAULT_LOCALE_COUNTRY = "VN"
+    const val DEFAULT_LOCALE_LANGUAGE = "vi"
+
 
     const val DEFAULT_INT = 0
     const val DEFAULT_DOUBLE = 0.0
@@ -31,6 +34,7 @@ object Constants {
     const val DEFAULT_PAGE = 0
     const val DOT = '.'
     const val CURRENCY_UNIT = 'đ'
+    const val LENGTH_CODE = 15
 
     const val SCHEME_ACTION_CALL = "tel"
 }

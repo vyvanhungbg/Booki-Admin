@@ -1,8 +1,9 @@
 package com.atom.android.bookshop.base
 
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
-import com.atom.android.bookshop.data.model.Bill
+import androidx.recyclerview.widget.RecyclerView
 import com.atom.android.bookshop.utils.Constants
 
 abstract class BaseAdapter<T, VH : BaseViewHolder<T>>(
@@ -13,26 +14,27 @@ abstract class BaseAdapter<T, VH : BaseViewHolder<T>>(
         holder.binView(getItem(position))
     }
 
-    fun removeItem(item: T) {
+    fun addItem(bill: T) {
         val newList = currentList.toMutableList()
-        newList.remove(item)
+        newList.add(Constants.FIRST_POSITION, bill)
         submitList(newList)
     }
 
-    fun addList(list: List<T>) {
-        val newList = currentList.toMutableList()
-        newList.addAll(list)
-        submitList(newList)
+    fun loadMore(recyclerView: RecyclerView?, handle: () -> Unit) {
+        recyclerView?.apply {
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                    val sizeData = recyclerView.adapter?.itemCount?.minus(1)
+                    if (linearLayoutManager != null &&
+                        linearLayoutManager.findLastCompletelyVisibleItemPosition() == sizeData
+                    ) {
+                        handle()
+                    }
+                }
+            })
+        }
     }
 
-    fun addItem(bill: T){
-        val newList = currentList.toMutableList()
-        newList.add(Constants.FIRST_POSITION,bill)
-        submitList(newList)
-    }
-
-    fun clearAll(){
-        val newList = mutableListOf<T>()
-        submitList(newList)
-    }
 }

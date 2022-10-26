@@ -34,10 +34,6 @@ class DiscountPresenter(
             })
     }
 
-    override fun createDiscount(context: Context?, discount: DiscountEntity) {
-
-    }
-
     companion object {
         private var instance: DiscountPresenter? = null
         fun getInstance(

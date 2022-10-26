@@ -1,6 +1,7 @@
 package com.atom.android.bookshop.data.model
 
 import android.os.Parcelable
+import androidx.recyclerview.widget.DiffUtil
 import com.atom.android.bookshop.data.source.remote.api.ApiConstants
 import com.atom.android.bookshop.utils.Constants
 import kotlinx.parcelize.Parcelize
@@ -17,27 +18,37 @@ data class Bill(
     val orderLines: List<OrderLine>,
     val createdAt: String,
 ) : Parcelable {
-    fun totalBill(): Double = totalPriceOfItems() + shippingMethod.cost
+    fun totalBill() = totalPriceOfItems() + shippingMethod.cost
 
-    fun totalPriceOfItems(): Double = orderLines.sumOf { it.amount * it.price }
+    fun totalPriceOfItems() = orderLines.sumOf { it.amount * it.price }
 
-    fun totalItem(): Int = orderLines.sumOf { it.amount }
+    fun totalItem() = orderLines.sumOf { it.amount }
 
-    fun getTimeOrder(): String =
+    fun getTimeOrder() =
         orderHistories.find { orderHistory -> orderHistory.status.id == ApiConstants.TYPEOFBILL.PENDING }?.statusDate
             ?: Constants.DEFAULT_STRING
 
-    fun getTimeConfirmed(): String =
+    fun getTimeConfirmed() =
         orderHistories.find { orderHistory -> orderHistory.status.id == ApiConstants.TYPEOFBILL.ACCEPT }?.statusDate
             ?: Constants.DEFAULT_STRING
 
-    fun getTimeDelivery(): String =
+    fun getTimeDelivery() =
         orderHistories.find { orderHistory -> orderHistory.status.id == ApiConstants.TYPEOFBILL.DELIVERY }?.statusDate
             ?: Constants.DEFAULT_STRING
 
-    fun getTimeDone(): String =
+    fun getTimeDone() =
         orderHistories.find { orderHistory -> orderHistory.status.id == ApiConstants.TYPEOFBILL.SUCCESS }?.statusDate
             ?: Constants.DEFAULT_STRING
+
+    class DiffCallBackItemBill : DiffUtil.ItemCallback<Bill>() {
+        override fun areItemsTheSame(oldItemSearch: Bill, newItemSearch: Bill): Boolean {
+            return oldItemSearch.id == newItemSearch.id
+        }
+
+        override fun areContentsTheSame(oldItemSearch: Bill, newItemSearch: Bill): Boolean {
+            return oldItemSearch == newItemSearch
+        }
+    }
 
     companion object {
         const val ID = "id"
@@ -49,5 +60,8 @@ data class Bill(
         const val ORDER_HISTORIES = "orderHistories"
         const val ORDER_LINES = "orderLines"
         const val CREATED_AT = "createdAt"
+        const val ACTION_ITEM = 0
+        const val ACTION_CONFIRM = 1
+        const val ACTION_CANCEL = 2
     }
 }

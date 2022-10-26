@@ -1,6 +1,7 @@
 package com.atom.android.bookshop.data.model
 
 import android.os.Parcelable
+import androidx.recyclerview.widget.DiffUtil
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -18,6 +19,17 @@ data class Discount(
     val enabled: Int,
     val bookDiscounts: List<Book>
 ) : Parcelable {
+
+    class DiffCallBackItemDiscount : DiffUtil.ItemCallback<Discount>() {
+        override fun areItemsTheSame(oldItemSearch: Discount, newItemSearch: Discount): Boolean {
+            return oldItemSearch.id == newItemSearch.id
+        }
+
+        override fun areContentsTheSame(oldItemSearch: Discount, newItemSearch: Discount): Boolean {
+            return oldItemSearch == newItemSearch
+        }
+    }
+
     companion object {
         const val ID = "id"
         const val NAME = "name"

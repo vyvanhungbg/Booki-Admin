@@ -76,6 +76,18 @@
     <string name="mess_list_bill_empty">Hiện tại không có đơn nào trong trạng thái này !</string>
     <string name="mess_list_discount_empty">Hiện tại không có mã giảm giá nào trong trạng thái này !</string>
     <string name="permission_call_denied">Vui lòng cấp lại quyền gọi điện trong phần cài đặt</string>
+    <string name="text_title_name_discount">Tiêu đề </string>
+    <string name="text_title_value_discount">Giá trị (tiền)</string>
+    <string name="title_create_discount">Tạo mã giảm giá</string>
+    <string name="text_error_request_call">Yêu cầu cuộc gọi thất bại !</string>
+    <string name="text_title_code_discount">Code</string>
+    <string name="text_title_random_code_discount">Tự động sinh</string>
+    <string name="text_title_amount_discount">Số lượng</string>
+    <string name="text_title_time_start_discount">Thời gian bắt đầu áp dụng</string>
+    <string name="text_title_time_end_discount">Thời gian hết hạn</string>
+    <string name="text_type_visible_discount">Hiển thị với người dùng</string>
+    <string name="text_title_type_discount">Loại mã giảm giá</string>
+    <string name="text_type_invisible_discount">Chỉ sử dụng khi có code</string>
 
 
 </resources>

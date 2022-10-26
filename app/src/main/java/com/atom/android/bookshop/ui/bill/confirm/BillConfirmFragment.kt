@@ -1,8 +1,6 @@
 package com.atom.android.bookshop.ui.bill.confirm
 
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.atom.android.bookshop.R
 import com.atom.android.bookshop.base.BaseFragment
 import com.atom.android.bookshop.data.model.Bill
@@ -17,6 +15,7 @@ import com.atom.android.bookshop.utils.toast
 class BillConfirmFragment :
     BaseFragment<FragmentBillConfirmBinding>(FragmentBillConfirmBinding::inflate),
     BillConfirmContract.View {
+
     private var currentPage = 1
     private val billConfirmPresenter by lazy {
         BillConfirmPresenter.getInstance(
@@ -27,15 +26,13 @@ class BillConfirmFragment :
         )
     }
 
-    val listAdapter = ListAdapterBillConfirm(
-        { bill: Bill ->
-            run {
-                navigateToDetailsFragment(bill)
-            }
-        },
-        { bill: Bill -> billConfirmPresenter.confirmShippingBill(context, bill) },
-        { bill: Bill -> billConfirmPresenter.destroyBill(context, bill) }
-    )
+    private val listAdapter = ListAdapterBillConfirm { bill, action ->
+        when (action) {
+            Bill.ACTION_CONFIRM -> billConfirmPresenter.confirmShippingBill(context, bill)
+            Bill.ACTION_CANCEL -> billConfirmPresenter.destroyBill(context, bill)
+            Bill.ACTION_ITEM -> navigateToDetailsFragment(bill)
+        }
+    }
 
     override fun initData() {
         billConfirmPresenter.getBillConfirm(context, currentPage)
@@ -46,22 +43,10 @@ class BillConfirmFragment :
     }
 
     override fun initEvent() {
-        binding?.recyclerviewBillConfirm?.apply {
-            adapter = listAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                    val sizeData = listAdapter.itemCount - 1
-                    if (linearLayoutManager != null &&
-                        linearLayoutManager.findLastCompletelyVisibleItemPosition() == sizeData
-                    ) {
-                        currentPage += 1
-                        binding?.progressLoadingMore?.isVisible = true
-                        billConfirmPresenter.getBillConfirm(context, currentPage)
-                    }
-                }
-            })
+        listAdapter.loadMore(binding?.recyclerviewBillConfirm) {
+            currentPage += 1
+            binding?.progressLoadingMore?.isVisible = true
+            billConfirmPresenter.getBillConfirm(context, currentPage)
         }
     }
 
@@ -70,7 +55,9 @@ class BillConfirmFragment :
             visibleError()
             binding?.textViewGetBillFailed?.text = context?.getString(R.string.mess_list_bill_empty)
         } else {
-            listAdapter.addList(bill)
+            val newList = listAdapter.currentList.toMutableList()
+            newList.addAll(bill)
+            listAdapter.submitList(newList)
             binding?.progressLoadingMore?.isVisible = false
         }
     }
@@ -97,7 +84,9 @@ class BillConfirmFragment :
             val billFragment = parentFragment as BillFragment
             billFragment.updateStatusBill(it, ApiConstants.TYPEOFBILL.DELIVERY)
         }
-        listAdapter.removeItem(oldBill)
+        val newList = listAdapter.currentList.toMutableList()
+        newList.remove(oldBill)
+        listAdapter.submitList(newList)
         context?.toast(message)
     }
 
@@ -106,6 +95,10 @@ class BillConfirmFragment :
         val beginTransaction = activity?.supportFragmentManager?.beginTransaction()
         beginTransaction?.replace(R.id.fragment_container, fragmentDetail)
             ?.addToBackStack(null)?.commit()
+    }
+
+    fun updateNewBill(bill: Bill) {
+        listAdapter.addItem(bill)
     }
 
     companion object {

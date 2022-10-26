@@ -7,14 +7,12 @@ import com.atom.android.bookshop.base.BaseAdapter
 import com.atom.android.bookshop.base.BaseViewHolder
 import com.atom.android.bookshop.data.model.Bill
 import com.atom.android.bookshop.databinding.ItemBillSuccessBinding
-import com.atom.android.bookshop.ui.bill.DiffCallBackItemBill
 import com.atom.android.bookshop.utils.Constants
 import com.atom.android.bookshop.utils.convertStrToMoney
 
 class ListAdapterBillSuccess(
     private val onClick: (Bill) -> Unit
-) :
-    BaseAdapter<Bill, BaseViewHolder<Bill>>(DiffCallBackItemBill()) {
+) : BaseAdapter<Bill, BaseViewHolder<Bill>>(Bill.DiffCallBackItemBill()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Bill> {
         val inflater = LayoutInflater.from(parent.context)
@@ -75,7 +73,7 @@ class ListAdapterBillSuccess(
         val timeDelivery: (String) -> String,
         val timeDone: (String) -> String,
     ) :
-        BaseViewHolder<Bill>(binding, onClick) {
+        BaseViewHolder<Bill>(binding) {
         override fun binView(item: Bill) {
             super.binView(item)
             binding.apply {
@@ -90,6 +88,9 @@ class ListAdapterBillSuccess(
                 textViewTimeDone.text = timeDone(item.getTimeDone())
                 titleTotalMoney.text = item.totalBill().toString().convertStrToMoney()
                 textViewDetail.setOnClickListener {
+                    onClick(item)
+                }
+                itemView.setOnClickListener {
                     onClick(item)
                 }
             }

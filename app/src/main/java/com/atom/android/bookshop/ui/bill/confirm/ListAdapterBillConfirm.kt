@@ -7,16 +7,11 @@ import com.atom.android.bookshop.base.BaseAdapter
 import com.atom.android.bookshop.base.BaseViewHolder
 import com.atom.android.bookshop.data.model.Bill
 import com.atom.android.bookshop.databinding.ItemBillConfirmBinding
-import com.atom.android.bookshop.ui.bill.DiffCallBackItemBill
 import com.atom.android.bookshop.utils.Constants
 
 class ListAdapterBillConfirm(
-    private val onClick: (Bill) -> Unit,
-    private val onClickConfirm: (Bill) -> Unit,
-    private val onClickCancel: (Bill) -> Unit
-) :
-    BaseAdapter<Bill, BaseViewHolder<Bill>>(DiffCallBackItemBill()) {
-
+    private val onClick: (Bill, action: Int) -> Unit
+) : BaseAdapter<Bill, BaseViewHolder<Bill>>(Bill.DiffCallBackItemBill()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Bill> {
         val inflater = LayoutInflater.from(parent.context)
@@ -48,9 +43,7 @@ class ListAdapterBillConfirm(
             binding,
             titleBill,
             contentBill,
-            timeConfirm,
-            onClickCancel,
-            onClickConfirm
+            timeConfirm
         )
     }
 
@@ -59,11 +52,9 @@ class ListAdapterBillConfirm(
         val binding: ItemBillConfirmBinding,
         val titleBill: (Int, String) -> String,
         val contentBill: (String, Int) -> String,
-        val timeConfirm: (String) -> String,
-        val onClickCancel: (Bill) -> Unit,
-        val onClickConfirm: (Bill) -> Unit
+        val timeConfirm: (String) -> String
     ) :
-        BaseViewHolder<Bill>(binding, onClick) {
+        BaseViewHolder<Bill>(binding) {
         override fun binView(item: Bill) {
             super.binView(item)
             binding.apply {
@@ -75,10 +66,13 @@ class ListAdapterBillConfirm(
                     )
                 textViewTimeConfirm.text = timeConfirm(item.getTimeConfirmed())
                 textViewConfirm.setOnClickListener {
-                    onClickConfirm(item)
+                    onClick(item, Bill.ACTION_CONFIRM)
                 }
                 textViewCancel.setOnClickListener {
-                    onClickCancel(item)
+                    onClick(item, Bill.ACTION_CANCEL)
+                }
+                itemView.setOnClickListener {
+                    onClick(item, Bill.ACTION_ITEM)
                 }
             }
         }

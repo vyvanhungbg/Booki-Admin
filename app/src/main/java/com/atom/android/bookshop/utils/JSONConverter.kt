@@ -1,6 +1,17 @@
 package com.atom.android.bookshop.utils
 
-import com.atom.android.bookshop.data.model.*
+import com.atom.android.bookshop.data.model.Author
+import com.atom.android.bookshop.data.model.Bill
+import com.atom.android.bookshop.data.model.Book
+import com.atom.android.bookshop.data.model.Discount
+import com.atom.android.bookshop.data.model.DiscountEntity
+import com.atom.android.bookshop.data.model.Genre
+import com.atom.android.bookshop.data.model.LoginEntity
+import com.atom.android.bookshop.data.model.OrderHistory
+import com.atom.android.bookshop.data.model.OrderLine
+import com.atom.android.bookshop.data.model.ShippingMethod
+import com.atom.android.bookshop.data.model.Status
+import com.atom.android.bookshop.data.model.User
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -174,15 +185,16 @@ fun JSONObject.getDiscount(): Discount {
 }
 
 fun DiscountEntity.convertToJson(): String {
-    val jsonObject = JSONObject()
-    jsonObject.put(DiscountEntity.NAME, name)
-    jsonObject.put(DiscountEntity.VALUE, value)
-    jsonObject.put(DiscountEntity.CODE, code)
-    jsonObject.put(DiscountEntity.AMOUNT, amount)
-    jsonObject.put(DiscountEntity.IMAGE, image)
-    jsonObject.put(DiscountEntity.TIME_END, timeEnd)
-    jsonObject.put(DiscountEntity.TIME_START, timeStart)
-    jsonObject.put(DiscountEntity.IS_VISIBLE, isVisible)
-    jsonObject.put(DiscountEntity.ID_BOOK, idBook)
+    val jsonObject = JSONObject().apply {
+        put(DiscountEntity.NAME, name)
+        put(DiscountEntity.VALUE, value)
+        put(DiscountEntity.CODE, code)
+        put(DiscountEntity.AMOUNT, amount)
+        put(DiscountEntity.IMAGE, image)
+        put(DiscountEntity.TIME_END, timeEnd)
+        put(DiscountEntity.TIME_START, timeStart)
+        put(DiscountEntity.IS_VISIBLE, isVisible)
+        put(DiscountEntity.ID_BOOK, idBook)
+    }
     return jsonObject.toString()
 }

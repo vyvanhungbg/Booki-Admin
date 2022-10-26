@@ -14,8 +14,7 @@ import com.atom.android.bookshop.utils.loadImage
 
 class ListAdapterBillDetail(
     private val onClick: (OrderLine) -> Unit,
-) :
-    BaseAdapter<OrderLine, BaseViewHolder<OrderLine>>(DiffCallBackItemOrderLine()) {
+) : BaseAdapter<OrderLine, BaseViewHolder<OrderLine>>(DiffCallBackItemOrderLine()) {
 
     class DiffCallBackItemOrderLine : DiffUtil.ItemCallback<OrderLine>() {
         override fun areItemsTheSame(oldItemSearch: OrderLine, newItemSearch: OrderLine): Boolean {
@@ -54,7 +53,7 @@ class ListAdapterBillDetail(
         val onClick: (OrderLine) -> Unit,
         val textAmount: (Int) -> String
     ) :
-        BaseViewHolder<OrderLine>(binding, onClick) {
+        BaseViewHolder<OrderLine>(binding) {
         override fun binView(item: OrderLine) {
             super.binView(item)
             binding.apply {

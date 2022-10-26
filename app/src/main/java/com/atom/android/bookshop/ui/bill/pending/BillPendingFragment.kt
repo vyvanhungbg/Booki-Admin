@@ -1,5 +1,8 @@
 package com.atom.android.bookshop.ui.bill.pending
 
+import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,12 +14,16 @@ import com.atom.android.bookshop.data.source.remote.api.ApiConstants
 import com.atom.android.bookshop.data.source.remote.bill.BillRemoteDataSource
 import com.atom.android.bookshop.databinding.FragmentBillPendingBinding
 import com.atom.android.bookshop.ui.bill.BillFragment
+import com.atom.android.bookshop.ui.bill.confirm.ListAdapterBillConfirm
 import com.atom.android.bookshop.ui.bill.detail.BillDetailFragment
+import com.atom.android.bookshop.ui.main.MainActivity
 import com.atom.android.bookshop.utils.toast
+import kotlin.math.log
 
 class BillPendingFragment :
     BaseFragment<FragmentBillPendingBinding>(FragmentBillPendingBinding::inflate),
     BillPendingContract.View {
+
     private var currentPage = 1
     private val billPendingPresenter by lazy {
         BillPendingPresenter.getInstance(
@@ -27,42 +34,28 @@ class BillPendingFragment :
         )
     }
 
-    private val listAdapter = ListAdapterBillPending(
-        { bill: Bill ->
-            run {
-                navigateToDetailsFragment(bill)
-            }
-        },
-        { bill: Bill -> billPendingPresenter.confirmBill(context, bill) },
-        { bill: Bill -> billPendingPresenter.destroyBill(context, bill) }
-    )
+    private val listAdapter = ListAdapterBillPending { bill, action ->
+        when (action) {
+            Bill.ACTION_CONFIRM -> billPendingPresenter.confirmBill(context, bill)
+            Bill.ACTION_CANCEL -> billPendingPresenter.destroyBill(context, bill)
+            Bill.ACTION_ITEM -> navigateToDetailsFragment(bill)
+        }
+    }
 
     override fun initData() {
         billPendingPresenter.getBillPending(context, currentPage)
     }
 
     override fun initView() {
-        binding?.recyclerviewBillPending?.apply {
-            adapter = listAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                    val sizeData = listAdapter.itemCount - 1
-                    if (linearLayoutManager != null &&
-                        linearLayoutManager.findLastCompletelyVisibleItemPosition() == sizeData
-                    ) {
-                        currentPage += 1
-                        binding?.progressLoadingMore?.isVisible = true
-                        billPendingPresenter.getBillPending(context, currentPage)
-                    }
-                }
-            })
-        }
+        binding?.recyclerviewBillPending?.adapter = listAdapter
     }
 
     override fun initEvent() {
-        // late impl
+        listAdapter.loadMore(binding?.recyclerviewBillPending) {
+            currentPage += 1
+            binding?.progressLoadingMore?.isVisible = true
+            billPendingPresenter.getBillPending(context, currentPage)
+        }
     }
 
     override fun getBillPendingSuccess(bill: List<Bill>) {
@@ -70,16 +63,18 @@ class BillPendingFragment :
             visibleError()
             binding?.textViewGetBillFailed?.text = context?.getString(R.string.mess_list_bill_empty)
         } else {
-            listAdapter.addList(bill)
+            val newList = listAdapter.currentList.toMutableList()
+            newList.addAll(bill)
+            listAdapter.submitList(newList)
             binding?.progressLoadingMore?.isVisible = false
         }
     }
 
     private fun visibleError() {
         binding?.apply {
-            textViewGetBillFailed?.isVisible = true
-            recyclerviewBillPending?.isVisible = false
-            progressLoadingMore?.isVisible = false
+            textViewGetBillFailed.isVisible = true
+            recyclerviewBillPending.isVisible = false
+            progressLoadingMore.isVisible = false
         }
     }
 
@@ -97,7 +92,9 @@ class BillPendingFragment :
             val billFragment = parentFragment as BillFragment
             billFragment.updateStatusBill(it, ApiConstants.TYPEOFBILL.ACCEPT)
         }
-        listAdapter.removeItem(oldBill)
+        val newList = listAdapter.currentList.toMutableList()
+        newList.remove(oldBill)
+        listAdapter.submitList(newList)
         context?.toast(message)
     }
 
