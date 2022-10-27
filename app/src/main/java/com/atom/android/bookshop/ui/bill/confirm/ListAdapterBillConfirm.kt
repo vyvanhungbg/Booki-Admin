@@ -16,55 +16,27 @@ class ListAdapterBillConfirm(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Bill> {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemBillConfirmBinding.inflate(inflater, parent, false)
-        val titleBill = { idBill: Int, time: String ->
-            parent.context.getString(
-                R.string.text_title_bill,
-                idBill,
-                time
-            )
-        }
-
-        val contentBill = { nameOfFistBook: String, totalItem: Int ->
-            parent.context.getString(
-                R.string.text_content_bill,
-                nameOfFistBook,
-                totalItem
-            )
-        }
-
-        val timeConfirm = { timeConfirm: String ->
-            parent.context.getString(
-                R.string.text_time_confirm,
-                timeConfirm
-            )
-        }
-
-        return ViewHolder(
-            binding,
-            titleBill,
-            contentBill,
-            timeConfirm
-        )
+        return ViewHolder(binding)
     }
 
 
-    inner class ViewHolder(
-        val binding: ItemBillConfirmBinding,
-        val titleBill: (Int, String) -> String,
-        val contentBill: (String, Int) -> String,
-        val timeConfirm: (String) -> String
-    ) :
-        BaseViewHolder<Bill>(binding) {
+    inner class ViewHolder(val binding: ItemBillConfirmBinding) : BaseViewHolder<Bill>(binding) {
         override fun binView(item: Bill) {
             super.binView(item)
             binding.apply {
-                titleBill.text = titleBill(item.id, item.createdAt)
-                contentBill.text =
-                    contentBill(
-                        item.orderLines[Constants.FIRST_POSITION].book.title,
-                        item.totalItem()
-                    )
-                textViewTimeConfirm.text = timeConfirm(item.getTimeConfirmed())
+                titleBill.text = binding.root.context.getString(
+                    R.string.text_title_bill,
+                    item.id, item.createdAt
+                )
+                contentBill.text = binding.root.context.getString(
+                    R.string.text_content_bill,
+                    item.orderLines[Constants.FIRST_POSITION].book.title,
+                    item.totalItem()
+                )
+                textViewTimeConfirm.text = binding.root.context.getString(
+                    R.string.text_time_confirm,
+                    item.getTimeConfirmed()
+                )
                 textViewConfirm.setOnClickListener {
                     onClick(item, Bill.ACTION_CONFIRM)
                 }
@@ -77,5 +49,4 @@ class ListAdapterBillConfirm(
             }
         }
     }
-
 }

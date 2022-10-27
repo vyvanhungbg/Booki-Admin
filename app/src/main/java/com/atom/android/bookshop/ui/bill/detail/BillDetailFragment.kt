@@ -68,11 +68,9 @@ class BillDetailFragment :
         }
     }
 
-
     override fun getBillSuccess(bill: Bill) {
         this.bill = bill
     }
-
 
     override fun getBillFailed() {
         binding?.textViewError?.isVisible = true

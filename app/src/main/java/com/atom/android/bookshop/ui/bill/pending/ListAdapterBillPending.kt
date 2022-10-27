@@ -1,6 +1,5 @@
 package com.atom.android.bookshop.ui.bill.pending
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.atom.android.bookshop.R
@@ -18,41 +17,23 @@ class ListAdapterBillPending(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Bill> {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemBillBinding.inflate(inflater, parent, false)
-        val titleBill = { idBill: Int, time: String ->
-            parent.context.getString(
-                R.string.text_title_bill,
-                idBill,
-                time
-            )
-        }
-
-        val contentBill = { nameOfFistBook: String, totalItem: Int ->
-            parent.context.getString(
-                R.string.text_content_bill,
-                nameOfFistBook,
-                totalItem
-            )
-        }
-
-        return ViewHolder(binding, titleBill, contentBill)
+        return ViewHolder(binding)
     }
 
 
-    inner class ViewHolder(
-        val binding: ItemBillBinding,
-        val titleBill: (Int, String) -> String,
-        val contentBill: (String, Int) -> String,
-    ) :
-        BaseViewHolder<Bill>(binding) {
+    inner class ViewHolder(val binding: ItemBillBinding) : BaseViewHolder<Bill>(binding) {
         override fun binView(item: Bill) {
             super.binView(item)
             binding.apply {
-                titleBill.text = titleBill(item.id, item.createdAt)
-                contentBill.text =
-                    contentBill(
-                        item.orderLines[Constants.FIRST_POSITION].book.title,
-                        item.totalItem()
-                    )
+                titleBill.text = binding.root.context.getString(
+                    R.string.text_title_bill,
+                    item.id, item.createdAt
+                )
+                contentBill.text = binding.root.context.getString(
+                    R.string.text_content_bill,
+                    item.orderLines[Constants.FIRST_POSITION].book.title,
+                    item.totalItem()
+                )
                 titleTotalMoney.text = item.totalBill().toString().convertStrToMoney()
                 textViewConfirm.setOnClickListener {
                     onClick(item, Bill.ACTION_CONFIRM)

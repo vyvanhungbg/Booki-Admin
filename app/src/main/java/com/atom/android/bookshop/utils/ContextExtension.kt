@@ -1,5 +1,6 @@
 package com.atom.android.bookshop.utils
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -96,6 +97,15 @@ fun Context.pickDateTime(action: (year: Int, month: Int, day: Int, hour: Int, mi
         startDay
     ).apply {
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        show()
+    }
+}
+
+fun Context.showAlertDialogNetwork() {
+    val alertDialog = AlertDialog.Builder(this).apply {
+        setTitle(context.getString(R.string.title_alert_lost_network))
+        setMessage(context.getString(R.string.mess_alert_lost_network))
+        setPositiveButton(context.getString(R.string.text_confirm)) { _, _ -> }
         show()
     }
 }

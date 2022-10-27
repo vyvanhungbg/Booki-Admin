@@ -8,9 +8,17 @@ class CreateDiscountContract {
     interface View {
         fun createDiscountSuccess(discount: Discount)
         fun createDiscountFailed(message: String?)
+        fun validateDiscountSuccess(discount: DiscountEntity)
+        fun validateDiscountFailed(message: String?)
+        fun showProgressBar()
+        fun hideProgressBar()
     }
 
     interface Presenter {
         fun createDiscount(context: Context?, discount: DiscountEntity)
+        fun validateDiscount(
+            context: Context?,
+            discount: DiscountEntity
+        )
     }
 }

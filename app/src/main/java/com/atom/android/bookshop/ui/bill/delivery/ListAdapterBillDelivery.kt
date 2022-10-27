@@ -16,65 +16,31 @@ class ListAdapterBillDelivery(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Bill> {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemBillDeliveryBinding.inflate(inflater, parent, false)
-        val titleBill = { idBill: Int, time: String ->
-            parent.context.getString(
-                R.string.text_title_bill,
-                idBill,
-                time
-            )
-        }
-
-        val contentBill = { nameOfFistBook: String, totalItem: Int ->
-            parent.context.getString(
-                R.string.text_content_bill,
-                nameOfFistBook,
-                totalItem
-            )
-        }
-
-        val timeConfirm = { timeConfirm: String ->
-            parent.context.getString(
-                R.string.text_time_confirm,
-                timeConfirm
-            )
-        }
-
-        val timeDelivery = { timeDelivery: String ->
-            parent.context.getString(
-                R.string.text_time_delivery,
-                timeDelivery
-            )
-        }
-
-        return ViewHolder(
-            binding,
-            titleBill,
-            contentBill,
-            timeConfirm,
-            timeDelivery
-        )
+        return ViewHolder(binding)
     }
 
-
-    inner class ViewHolder(
-        val binding: ItemBillDeliveryBinding,
-        val titleBill: (Int, String) -> String,
-        val contentBill: (String, Int) -> String,
-        val timeConfirm: (String) -> String,
-        val timeDelivery: (String) -> String
-    ) :
+    inner class ViewHolder(val binding: ItemBillDeliveryBinding) :
         BaseViewHolder<Bill>(binding) {
         override fun binView(item: Bill) {
             super.binView(item)
             binding.apply {
-                titleBill.text = titleBill(item.id, item.createdAt)
-                contentBill.text =
-                    contentBill(
-                        item.orderLines[Constants.FIRST_POSITION].book.title,
-                        item.totalItem()
-                    )
-                textViewTimeConfirm.text = timeConfirm(item.getTimeConfirmed())
-                textViewTimeDelivery.text = timeDelivery(item.getTimeDelivery())
+                titleBill.text = binding.root.context.getString(
+                    R.string.text_title_bill,
+                    item.id, item.createdAt
+                )
+                contentBill.text = binding.root.context.getString(
+                    R.string.text_content_bill,
+                    item.orderLines[Constants.FIRST_POSITION].book.title,
+                    item.totalItem()
+                )
+                textViewTimeConfirm.text = binding.root.context.getString(
+                    R.string.text_time_confirm,
+                    item.getTimeConfirmed()
+                )
+                textViewTimeDelivery.text = binding.root.context.getString(
+                    R.string.text_time_delivery,
+                    item.getTimeDelivery()
+                )
                 textViewConfirm.setOnClickListener {
                     onClick(item, Bill.ACTION_CONFIRM)
                 }
@@ -85,7 +51,6 @@ class ListAdapterBillDelivery(
                     onClick(item, Bill.ACTION_ITEM)
                 }
             }
-
         }
     }
 }

@@ -8,6 +8,7 @@ import com.atom.android.bookshop.utils.getBill
 import com.atom.android.bookshop.utils.getDiscount
 import com.atom.android.bookshop.utils.getUser
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 
 fun convertJsonToResponseObject(jsonObject: JSONObject): ResponseObject<String> {
@@ -50,9 +51,14 @@ fun convertBillsJsonToResponseObject(jsonObject: JSONObject): ResponseObject<Lis
 fun convertDiscountJsonToResponseObject(jsonObject: JSONObject): ResponseObject<Discount> {
     val status = jsonObject.getBoolean(ApiConstants.Response.STATUS)
     val message = jsonObject.getString(ApiConstants.Response.MESSAGE)
-    val jsonData = JSONObject(jsonObject.getString(ApiConstants.Response.DATA))
-    val data = jsonData.getDiscount()
-    return ResponseObject(status, message, data)
+    return try {
+        val jsonData = JSONObject(jsonObject.getString(ApiConstants.Response.DATA))
+        val data = jsonData.getDiscount()
+        ResponseObject(status, message, data)
+    } catch (ex: JSONException) {
+        val data = ex.message
+        ResponseObject(status, message, null)
+    }
 }
 
 fun convertDiscountsJsonToResponseObject(jsonObject: JSONObject): ResponseObject<List<Discount>> {

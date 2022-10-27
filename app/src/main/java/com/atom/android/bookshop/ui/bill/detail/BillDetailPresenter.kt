@@ -8,7 +8,7 @@ import android.os.Bundle
 import com.atom.android.bookshop.data.model.Bill
 import com.atom.android.bookshop.utils.Constants
 
-class BillDetailPresenter() :
+class BillDetailPresenter :
     BillDetailContract.Presenter {
 
     private var view: BillDetailContract.View? = null

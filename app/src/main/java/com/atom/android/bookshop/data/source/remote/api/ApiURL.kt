@@ -11,5 +11,5 @@ object ApiURL {
         BuildConfig.API_HOST + ApiConstants.Endpoint.UPDATE_STATUS_BILL
     fun pathGetUser(): String = BuildConfig.API_HOST + ApiConstants.Endpoint.GET_USER
     fun pathCheckToken(): String = BuildConfig.API_HOST + ApiConstants.Endpoint.GET_USER
-    fun pathDiscount(): String  = BuildConfig.API_HOST + ApiConstants.Endpoint.DISCOUNT
+    fun pathDiscount(): String = BuildConfig.API_HOST + ApiConstants.Endpoint.DISCOUNT
 }

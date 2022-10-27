@@ -14,6 +14,11 @@ class BillDeliveryContract {
     interface Presenter {
         fun getBillDelivery(context: Context?, currentPage: Int)
         fun confirmDeliveryBill(context: Context?, bill: Bill)
-        fun destroyBill(context: Context?, bill: Bill)
+        fun requestDestroyBill(
+            context: Context?,
+            bill: Bill,
+            reasonForDestroy: String?,
+            status: Int
+        )
     }
 }

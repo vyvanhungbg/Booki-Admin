@@ -29,40 +29,29 @@ class ListAdapterBillDetail(
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<OrderLine> {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemOrderLineBinding.inflate(inflater, parent, false)
-        val textAmount = { textAmount: Int ->
-            parent.context.getString(
-                R.string.text_amount,
-                textAmount
-            )
-        }
 
-        return ViewHolder(
-            binding,
-            onClick,
-            textAmount
-        )
+
+        return ViewHolder(binding)
     }
 
-
-    inner class ViewHolder(
-        val binding: ItemOrderLineBinding,
-        val onClick: (OrderLine) -> Unit,
-        val textAmount: (Int) -> String
-    ) :
-        BaseViewHolder<OrderLine>(binding) {
+    inner class ViewHolder(val binding: ItemOrderLineBinding) : BaseViewHolder<OrderLine>(binding) {
         override fun binView(item: OrderLine) {
             super.binView(item)
             binding.apply {
                 imgItem.loadImage(Uri.parse(item.book.image))
                 textViewPriceItem.text = item.price.toString().convertStrToMoney()
-                textViewAmountItem.text = textAmount(item.amount)
+                textViewAmountItem.text = binding.root.context.getString(
+                    R.string.text_amount,
+                    item.amount
+                )
                 textViewNameItem.text = item.book.title
+                itemView.setOnClickListener{
+                    onClick(item)
+                }
             }
         }
     }
-
 }

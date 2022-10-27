@@ -10,6 +10,7 @@ import com.atom.android.bookshop.data.source.remote.bill.BillRemoteDataSource
 import com.atom.android.bookshop.databinding.FragmentBillConfirmBinding
 import com.atom.android.bookshop.ui.bill.BillFragment
 import com.atom.android.bookshop.ui.bill.detail.BillDetailFragment
+import com.atom.android.bookshop.utils.navigate
 import com.atom.android.bookshop.utils.toast
 
 class BillConfirmFragment :
@@ -30,7 +31,10 @@ class BillConfirmFragment :
         when (action) {
             Bill.ACTION_CONFIRM -> billConfirmPresenter.confirmShippingBill(context, bill)
             Bill.ACTION_CANCEL -> billConfirmPresenter.destroyBill(context, bill)
-            Bill.ACTION_ITEM -> navigateToDetailsFragment(bill)
+            Bill.ACTION_ITEM -> {
+                val fragmentDetail = BillDetailFragment.newInstance(bill)
+                activity?.navigate(fragmentDetail)
+            }
         }
     }
 
@@ -88,13 +92,6 @@ class BillConfirmFragment :
         newList.remove(oldBill)
         listAdapter.submitList(newList)
         context?.toast(message)
-    }
-
-    private fun navigateToDetailsFragment(bill: Bill) {
-        val fragmentDetail = BillDetailFragment.newInstance(bill)
-        val beginTransaction = activity?.supportFragmentManager?.beginTransaction()
-        beginTransaction?.replace(R.id.fragment_container, fragmentDetail)
-            ?.addToBackStack(null)?.commit()
     }
 
     fun updateNewBill(bill: Bill) {

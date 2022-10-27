@@ -1,5 +1,7 @@
 package com.atom.android.bookshop.ui.bill.pending
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,6 +19,9 @@ import com.atom.android.bookshop.ui.bill.BillFragment
 import com.atom.android.bookshop.ui.bill.confirm.ListAdapterBillConfirm
 import com.atom.android.bookshop.ui.bill.detail.BillDetailFragment
 import com.atom.android.bookshop.ui.main.MainActivity
+import com.atom.android.bookshop.utils.navigate
+import com.atom.android.bookshop.utils.registerNetwork
+import com.atom.android.bookshop.utils.showAlertDialogNetwork
 import com.atom.android.bookshop.utils.toast
 import kotlin.math.log
 
@@ -38,7 +43,10 @@ class BillPendingFragment :
         when (action) {
             Bill.ACTION_CONFIRM -> billPendingPresenter.confirmBill(context, bill)
             Bill.ACTION_CANCEL -> billPendingPresenter.destroyBill(context, bill)
-            Bill.ACTION_ITEM -> navigateToDetailsFragment(bill)
+            Bill.ACTION_ITEM -> {
+                val fragmentDetail = BillDetailFragment.newInstance(bill)
+                activity?.navigate(fragmentDetail)
+            }
         }
     }
 
@@ -56,6 +64,11 @@ class BillPendingFragment :
             binding?.progressLoadingMore?.isVisible = true
             billPendingPresenter.getBillPending(context, currentPage)
         }
+        registerNetwork(
+            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
+            onConnectedInternet = ::initData,
+            onLostInternet = { }
+        )
     }
 
     override fun getBillPendingSuccess(bill: List<Bill>) {
@@ -96,13 +109,6 @@ class BillPendingFragment :
         newList.remove(oldBill)
         listAdapter.submitList(newList)
         context?.toast(message)
-    }
-
-    private fun navigateToDetailsFragment(bill: Bill) {
-        val fragmentDetail = BillDetailFragment.newInstance(bill)
-        val beginTransaction = activity?.supportFragmentManager?.beginTransaction()
-        beginTransaction?.replace(R.id.fragment_container, fragmentDetail)
-            ?.addToBackStack(null)?.commit()
     }
 
     companion object {

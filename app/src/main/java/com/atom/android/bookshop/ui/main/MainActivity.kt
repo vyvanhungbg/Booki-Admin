@@ -1,6 +1,8 @@
 package com.atom.android.bookshop.ui.main
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.atom.android.bookshop.R
@@ -13,6 +15,8 @@ import com.atom.android.bookshop.ui.authentication.AuthenticationActivity
 import com.atom.android.bookshop.ui.bill.BillFragment
 import com.atom.android.bookshop.ui.discount.DiscountFragment
 import com.atom.android.bookshop.ui.home.HomeFragment
+import com.atom.android.bookshop.utils.registerNetwork
+import com.atom.android.bookshop.utils.showAlertDialogNetwork
 import com.atom.android.bookshop.utils.toast
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate),
@@ -29,6 +33,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun initView() {
         setUpNav()
+        registerNetwork(
+            this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
+            onConnectedInternet = {  },
+            onLostInternet = { showAlertDialogNetwork() }
+        )
     }
 
     override fun initData() {
@@ -44,6 +53,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             this@MainActivity,
             listOf<Fragment>(HomeFragment(), DiscountFragment(), BillFragment(), AccountFragment())
         )
+        binding?.viewPagerMain?.isUserInputEnabled = false
         binding?.navView?.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {

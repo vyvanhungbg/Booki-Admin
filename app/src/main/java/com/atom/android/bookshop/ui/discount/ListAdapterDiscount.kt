@@ -20,57 +20,34 @@ class ListAdapterDiscount(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Discount> {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemDiscountBinding.inflate(inflater, parent, false)
-
-        val contentDiscount = { code: String ->
-            parent.context.getString(
-                R.string.text_content_discount,
-                code
-            )
-        }
-
-        val timeStart = { timeStart: String ->
-            parent.context.getString(
-                R.string.text_time_start,
-                timeStart
-            )
-        }
-
-        val timeEnd = { timeEnd: String ->
-            parent.context.getString(
-                R.string.text_time_end,
-                timeEnd
-            )
-        }
-
-
-        return ViewHolder(
-            binding,
-            contentDiscount,
-            timeStart,
-            timeEnd
-        )
+        return ViewHolder(binding)
     }
-
-
-    inner class ViewHolder(
-        val binding: ItemDiscountBinding,
-        val contentDiscount: (String) -> String,
-        val timeStart: (String) -> String,
-        val timeEnd: (String) -> String,
-    ) :
-        BaseViewHolder<Discount>(binding) {
+    
+    inner class ViewHolder(val binding: ItemDiscountBinding) : BaseViewHolder<Discount>(binding) {
         override fun binView(item: Discount) {
             super.binView(item)
             binding.apply {
                 textViewTitleDiscount.text = item.name
                 if (item.code != Constants.DEFAULT_STRING) {
-                    textViewContentDiscount.text = contentDiscount(item.code)
+                    textViewContentDiscount.text = binding.root.context.getString(
+                        R.string.text_content_discount,
+                        item.code
+                    )
                 } else {
                     textViewContentDiscount.isVisible = false
                 }
-                textViewStartTime.text = timeStart(item.timeStart)
-                textViewEndTime.text = timeEnd(item.timeEnd)
+                textViewStartTime.text = binding.root.context.getString(
+                    R.string.text_time_start,
+                    item.timeStart
+                )
+                textViewEndTime.text = binding.root.context.getString(
+                    R.string.text_time_end,
+                    item.timeEnd
+                )
                 imageDiscount.loadImage(Uri.parse(item.image))
+                itemView.setOnClickListener {
+                    onClick(item)
+                }
             }
         }
     }

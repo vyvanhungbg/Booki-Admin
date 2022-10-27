@@ -67,7 +67,7 @@ object ApiConstants {
         const val LOST = 6
     }
 
-    object TYPEOFDISCOUNT{
+    object TYPEOFDISCOUNT {
         const val RUNNING = 0
         const val EXPIRED = 1
         const val DESTROY = 2

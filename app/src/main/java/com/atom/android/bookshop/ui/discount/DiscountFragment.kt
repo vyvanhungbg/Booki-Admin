@@ -1,5 +1,6 @@
 package com.atom.android.bookshop.ui.discount
 
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -12,6 +13,7 @@ import com.atom.android.bookshop.data.source.remote.api.ApiConstants
 import com.atom.android.bookshop.data.source.remote.discount.DiscountRemoteDataSource
 import com.atom.android.bookshop.databinding.FragmentDiscountBinding
 import com.atom.android.bookshop.ui.discount.adddiscount.CreateDiscountFragment
+import com.atom.android.bookshop.utils.navigate
 
 typealias DefaultSource = com.google.android.material.R.layout
 
@@ -31,11 +33,10 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
 
     val listAdapter = ListAdapterDiscount { discount: Discount ->
         {}
-
     }
 
     override fun initData() {
-        discountPresenter.getDiscount(context, currentPage, type);
+        //discountPresenter.getDiscount(context, currentPage, type);
     }
 
 
@@ -76,11 +77,12 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
-
+                    // late impl
                 }
             }
         binding?.imgAdd?.setOnClickListener {
-            navigateToCreateFragment()
+            val fragment = CreateDiscountFragment()
+            activity?.navigate(fragment)
         }
     }
 
@@ -105,13 +107,6 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
         visibleError()
     }
 
-    private fun navigateToCreateFragment() {
-        val fragment = CreateDiscountFragment()
-        val beginTransaction = activity?.supportFragmentManager?.beginTransaction()
-        beginTransaction?.replace(R.id.fragment_container, fragment)
-            ?.addToBackStack(null)?.commit()
-    }
-
     private fun visibleError() {
         binding?.apply {
             textViewGetDiscountFailed.isVisible = true
@@ -119,5 +114,4 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
             progressLoadingMore.isVisible = false
         }
     }
-
 }

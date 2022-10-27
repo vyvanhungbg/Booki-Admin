@@ -6,10 +6,10 @@ data class DiscountEntity(
     val code: String,
     val amount: Int,
     val image: String,
-    val timeEnd: String,
-    val timeStart: String,
+    val timeEnd: String?,
+    val timeStart: String?,
     val isVisible: Int,
-    val idBook: List<Book>
+    val idBook: List<Int>?
 ) {
     companion object {
         const val NAME = "name"

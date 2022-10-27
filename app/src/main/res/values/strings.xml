@@ -88,6 +88,18 @@
     <string name="text_type_visible_discount">Hiển thị với người dùng</string>
     <string name="text_title_type_discount">Loại mã giảm giá</string>
     <string name="text_type_invisible_discount">Chỉ sử dụng khi có code</string>
+    <string name="text_title_book_discount">Chọn sách áp dụng , (bỏ trống áp dụng toàn bộ)</string>
+    <string name="text_discount_created">Tạo mã giảm giá thành công</string>
+    <string name="text_validate_name_discount_failed">Vui lòng nhập tiêu đề cho mã giảm giá</string>
+    <string name="text_validate_value_discount_failed">Giá trị phải lớn hơn 1000</string>
+    <string name="text_validate_code_discount_failed">"Vui lòng nhập code 15 kí tự "</string>
+    <string name="text_validate_amount_discount_failed">Vui lòng nhập số lượng lớn hơn 0</string>
+    <string name="text_validate_time_start_discount_failed">Vui lòng nhập thời gian bắt đầu</string>
+    <string name="text_validate_time_end_discount_failed">Vui lòng nhập thời gian kết thúc</string>
+    <string name="text_validate_time_discount_failed">Ngày hết hạn phải sau ngày bắt đầu</string>
+    <string name="title_alert_lost_network">Lỗi mạng</string>
+    <string name="mess_alert_lost_network">Bạn đã mất kết nối mạng !</string>
+    <string name="text_connected_internet">Đã kết nối mạng</string>
 
 
 </resources>

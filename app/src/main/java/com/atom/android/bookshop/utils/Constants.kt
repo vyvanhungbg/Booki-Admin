@@ -1,6 +1,7 @@
 package com.atom.android.bookshop.utils
 
 object Constants {
+
     private const val PROJECT_NAME = "com.atom.android.bookshop."
 
     const val NUMBER_PHONE_PATTERN = "([0-9]{9,10})\\b"
@@ -35,6 +36,7 @@ object Constants {
     const val DOT = '.'
     const val CURRENCY_UNIT = 'đ'
     const val LENGTH_CODE = 15
+    const val MIN_VALUE_DISCOUNT = 1000
 
     const val SCHEME_ACTION_CALL = "tel"
 }

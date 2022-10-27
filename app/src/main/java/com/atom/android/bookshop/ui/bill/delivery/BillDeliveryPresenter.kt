@@ -1,6 +1,5 @@
 package com.atom.android.bookshop.ui.bill.delivery
 
-import android.app.AlertDialog
 import android.content.Context
 import com.atom.android.bookshop.R
 import com.atom.android.bookshop.data.model.Bill
@@ -58,31 +57,7 @@ class BillDeliveryPresenter(
             })
     }
 
-    override fun destroyBill(context: Context?, bill: Bill) {
-        val titleAlertDialog = context?.getString(R.string.title_alert_destroy_bill)
-        val listItems = context?.resources?.getStringArray(R.array.list_items_destroy_bill)
-        var selectedIndex = Constants.DEFAULT_INT
-        AlertDialog.Builder(context).apply {
-            setTitle(titleAlertDialog)
-            setSingleChoiceItems(listItems, selectedIndex) { _, which ->
-                selectedIndex = which
-            }
-            setPositiveButton(context?.getText(R.string.text_confirm)) { dialog, which ->
-                val destroyOrLostBill =
-                    if (selectedIndex == INDEX_OF_ITEM_LOST)
-                        ApiConstants.TYPEOFBILL.LOST
-                    else ApiConstants.TYPEOFBILL.DESTROY
-                requestDestroyBill(context, bill, listItems?.get(selectedIndex), destroyOrLostBill)
-            }
-
-            setNegativeButton(context?.getText(R.string.text_cancel)) { dialog, which ->
-                dialog.cancel()
-            }
-            show()
-        }
-    }
-
-    private fun requestDestroyBill(
+    override fun requestDestroyBill(
         context: Context?,
         bill: Bill,
         reasonForDestroy: String?,
