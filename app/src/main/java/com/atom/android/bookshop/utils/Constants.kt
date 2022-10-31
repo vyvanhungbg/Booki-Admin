@@ -32,7 +32,7 @@ object Constants {
     const val DEFAULT_INT = 0
     const val DEFAULT_DOUBLE = 0.0
     const val DEFAULT_STRING = ""
-    const val DEFAULT_PAGE = 0
+    const val DEFAULT_PAGE = 1
     const val DOT = '.'
     const val CURRENCY_UNIT = 'đ'
     const val LENGTH_CODE = 15

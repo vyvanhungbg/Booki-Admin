@@ -1,6 +1,7 @@
 package com.atom.android.bookshop.ui.discount.adddiscount
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.atom.android.bookshop.R
 import com.atom.android.bookshop.data.model.Discount
 import com.atom.android.bookshop.data.model.DiscountEntity
@@ -8,17 +9,19 @@ import com.atom.android.bookshop.data.repository.DiscountRepository
 import com.atom.android.bookshop.data.source.remote.IRequestCallback
 import com.atom.android.bookshop.data.source.remote.ResponseObject
 import com.atom.android.bookshop.utils.Constants
-import com.atom.android.bookshop.utils.SharedPreferenceUtils
 import com.atom.android.bookshop.utils.getTokenLogin
 import java.text.SimpleDateFormat
 
-class CreateDiscountPresenter(private val repository: DiscountRepository) :
+class CreateDiscountPresenter(
+    private val repository: DiscountRepository,
+    private val sharedPreferences: SharedPreferences?
+) :
     CreateDiscountContract.Presenter {
 
     private var view: CreateDiscountContract.View? = null
 
     override fun createDiscount(context: Context?, discount: DiscountEntity) {
-        val token = SharedPreferenceUtils.getInstance(context)?.getTokenLogin()
+        val token = sharedPreferences?.getTokenLogin()
         view?.showProgressBar()
         repository.createDiscount(
             token,
@@ -79,9 +82,10 @@ class CreateDiscountPresenter(private val repository: DiscountRepository) :
         private var instance: CreateDiscountPresenter? = null
         fun getInstance(
             repository: DiscountRepository,
+            sharedPreferences: SharedPreferences?,
         ) = synchronized(this) {
-            instance ?: CreateDiscountPresenter(repository).also {
-                instance = it
+            this.instance ?: CreateDiscountPresenter(repository, sharedPreferences).also {
+                this.instance = it
             }
         }
     }

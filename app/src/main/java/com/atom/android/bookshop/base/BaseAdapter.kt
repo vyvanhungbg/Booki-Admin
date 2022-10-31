@@ -1,5 +1,6 @@
 package com.atom.android.bookshop.base
 
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -28,7 +29,7 @@ abstract class BaseAdapter<T, VH : BaseViewHolder<T>>(
                     val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
                     val sizeData = recyclerView.adapter?.itemCount?.minus(1)
                     if (linearLayoutManager != null &&
-                        linearLayoutManager.findLastCompletelyVisibleItemPosition() == sizeData
+                        linearLayoutManager.findLastCompletelyVisibleItemPosition() == sizeData && sizeData != -1
                     ) {
                         handle()
                     }

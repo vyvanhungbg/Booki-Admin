@@ -1,6 +1,7 @@
 package com.atom.android.bookshop.ui.bill.pending
 
 import android.content.Context
+import com.atom.android.bookshop.base.BasePresenter
 import com.atom.android.bookshop.data.model.Bill
 
 class BillPendingContract {
@@ -11,7 +12,7 @@ class BillPendingContract {
         fun requestSuccess(oldBill: Bill, newBill: Bill?, message: String?)
     }
 
-    interface Presenter {
+    interface Presenter: BasePresenter<BillPendingContract.View> {
         fun getBillPending(context: Context?, page: Int)
         fun confirmBill(context: Context?, bill: Bill)
         fun destroyBill(context: Context?, bill: Bill)

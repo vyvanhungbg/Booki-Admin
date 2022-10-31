@@ -20,8 +20,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             LoginRepository.getInstance(
                 LoginLocalDataSource.getInstance(),
                 LoginRemoteDataSource.getInstance()
-            ),
-            this
+            )
         )
     }
 
@@ -30,7 +29,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
     override fun initData() {
-        // TODO implement later
+        loginPresenter.setView(this)
     }
 
     override fun initView() {

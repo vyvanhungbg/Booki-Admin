@@ -22,25 +22,26 @@ class ListAdapterDiscount(
         val binding = ItemDiscountBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
-    
+
     inner class ViewHolder(val binding: ItemDiscountBinding) : BaseViewHolder<Discount>(binding) {
         override fun binView(item: Discount) {
             super.binView(item)
             binding.apply {
+                val context = binding.root.context
                 textViewTitleDiscount.text = item.name
                 if (item.code != Constants.DEFAULT_STRING) {
-                    textViewContentDiscount.text = binding.root.context.getString(
+                    textViewContentDiscount.text = context.getString(
                         R.string.text_content_discount,
                         item.code
                     )
                 } else {
                     textViewContentDiscount.isVisible = false
                 }
-                textViewStartTime.text = binding.root.context.getString(
+                textViewStartTime.text = context.getString(
                     R.string.text_time_start,
                     item.timeStart
                 )
-                textViewEndTime.text = binding.root.context.getString(
+                textViewEndTime.text = context.getString(
                     R.string.text_time_end,
                     item.timeEnd
                 )

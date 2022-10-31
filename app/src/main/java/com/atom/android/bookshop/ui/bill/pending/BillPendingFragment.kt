@@ -1,13 +1,6 @@
 package com.atom.android.bookshop.ui.bill.pending
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.atom.android.bookshop.R
 import com.atom.android.bookshop.base.BaseFragment
 import com.atom.android.bookshop.data.model.Bill
@@ -16,14 +9,11 @@ import com.atom.android.bookshop.data.source.remote.api.ApiConstants
 import com.atom.android.bookshop.data.source.remote.bill.BillRemoteDataSource
 import com.atom.android.bookshop.databinding.FragmentBillPendingBinding
 import com.atom.android.bookshop.ui.bill.BillFragment
-import com.atom.android.bookshop.ui.bill.confirm.ListAdapterBillConfirm
 import com.atom.android.bookshop.ui.bill.detail.BillDetailFragment
-import com.atom.android.bookshop.ui.main.MainActivity
+import com.atom.android.bookshop.utils.Constants
+import com.atom.android.bookshop.utils.SharedPreferenceUtils
 import com.atom.android.bookshop.utils.navigate
-import com.atom.android.bookshop.utils.registerNetwork
-import com.atom.android.bookshop.utils.showAlertDialogNetwork
 import com.atom.android.bookshop.utils.toast
-import kotlin.math.log
 
 class BillPendingFragment :
     BaseFragment<FragmentBillPendingBinding>(FragmentBillPendingBinding::inflate),
@@ -35,7 +25,7 @@ class BillPendingFragment :
             BillRepository.getInstance(
                 BillRemoteDataSource.getInstance()
             ),
-            this
+            SharedPreferenceUtils.getInstance(context)
         )
     }
 
@@ -51,6 +41,7 @@ class BillPendingFragment :
     }
 
     override fun initData() {
+        billPendingPresenter.setView(this)
         billPendingPresenter.getBillPending(context, currentPage)
     }
 
@@ -64,35 +55,37 @@ class BillPendingFragment :
             binding?.progressLoadingMore?.isVisible = true
             billPendingPresenter.getBillPending(context, currentPage)
         }
-        registerNetwork(
-            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
-            onConnectedInternet = ::initData,
-            onLostInternet = { }
-        )
+        binding?.swiperefreshlayout?.setOnRefreshListener {
+            currentPage = Constants.DEFAULT_PAGE
+            listAdapter.submitList(mutableListOf())
+            billPendingPresenter.getBillPending(context, currentPage)
+        }
     }
 
     override fun getBillPendingSuccess(bill: List<Bill>) {
         if (listAdapter.currentList.isEmpty() && bill.isEmpty()) {
-            visibleError()
+            visibleScreen(true)
             binding?.textViewGetBillFailed?.text = context?.getString(R.string.mess_list_bill_empty)
         } else {
             val newList = listAdapter.currentList.toMutableList()
             newList.addAll(bill)
             listAdapter.submitList(newList)
-            binding?.progressLoadingMore?.isVisible = false
+            visibleScreen(false)
         }
     }
 
-    private fun visibleError() {
+    private fun visibleScreen(isError: Boolean) {
         binding?.apply {
-            textViewGetBillFailed.isVisible = true
-            recyclerviewBillPending.isVisible = false
+            textViewGetBillFailed.isVisible = isError
+            recyclerviewBillPending.isVisible = !isError
             progressLoadingMore.isVisible = false
+            swiperefreshlayout.isRefreshing = false
         }
     }
 
     override fun getBillPendingFailed(message: String?) {
-        visibleError()
+        context?.toast(message)
+        visibleScreen(isError = true)
         binding?.textViewGetBillFailed?.text = context?.getString(R.string.text_get_bill_failed)
     }
 
@@ -109,6 +102,7 @@ class BillPendingFragment :
         newList.remove(oldBill)
         listAdapter.submitList(newList)
         context?.toast(message)
+        visibleScreen(false)
     }
 
     companion object {

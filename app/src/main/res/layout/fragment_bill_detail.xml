@@ -85,7 +85,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/title_delivery"
+                        android:id="@+id/text_view_title_delivery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_12dp"
@@ -102,8 +102,8 @@
                         android:layout_marginTop="@dimen/margin_12dp"
                         tools:text="@string/text_some_thing"
                         android:textStyle="italic"
-                        app:layout_constraintStart_toStartOf="@id/title_delivery"
-                        app:layout_constraintTop_toBottomOf="@id/title_delivery" />
+                        app:layout_constraintStart_toStartOf="@id/text_view_title_delivery"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_title_delivery" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -126,7 +126,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/title_location"
+                        android:id="@+id/text_view_title_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_12dp"
@@ -143,8 +143,8 @@
                         android:layout_marginTop="@dimen/margin_12dp"
                         tools:text="@string/text_some_thing"
                         android:textStyle="italic"
-                        app:layout_constraintStart_toStartOf="@id/title_location"
-                        app:layout_constraintTop_toBottomOf="@id/title_location" />
+                        app:layout_constraintStart_toStartOf="@id/text_view_title_location"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_title_location" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -167,7 +167,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/title_phone"
+                        android:id="@+id/text_view_title_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_12dp"
@@ -183,8 +183,8 @@
                         android:layout_marginTop="@dimen/margin_12dp"
                         tools:text="@string/text_some_thing"
                         android:textStyle="italic"
-                        app:layout_constraintStart_toStartOf="@id/title_phone"
-                        app:layout_constraintTop_toBottomOf="@id/title_phone" />
+                        app:layout_constraintStart_toStartOf="@id/text_view_title_phone"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_title_phone" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -205,7 +205,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/title_list_item"
+                        android:id="@+id/text_view_title_list_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_12dp"
@@ -221,8 +221,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_12dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintStart_toStartOf="@id/title_list_item"
-                        app:layout_constraintTop_toBottomOf="@id/title_list_item"
+                        app:layout_constraintStart_toStartOf="@id/text_view_title_list_item"
+                        app:layout_constraintTop_toBottomOf="@id/text_view_title_list_item"
                         tools:itemCount="3"
                         tools:listitem="@layout/item_order_line" />
 
@@ -388,7 +388,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/title_status_bill"
+                        android:id="@+id/text_view_title_status_bill"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_12dp"

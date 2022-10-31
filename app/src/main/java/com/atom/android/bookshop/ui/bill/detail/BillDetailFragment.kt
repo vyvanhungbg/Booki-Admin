@@ -1,6 +1,6 @@
 package com.atom.android.bookshop.ui.bill.detail
 
-import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.atom.android.bookshop.R
 import com.atom.android.bookshop.base.BaseFragment
@@ -91,10 +91,10 @@ class BillDetailFragment :
     companion object {
         const val EXTRA_BILL = "EXTRA_BILL"
         fun newInstance(bill: Bill): BillDetailFragment {
-            val args = Bundle()
-            args.putParcelable(EXTRA_BILL, bill)
             val fragment = BillDetailFragment()
-            fragment.arguments = args
+            fragment.arguments = bundleOf(
+                EXTRA_BILL to bill
+            )
             return fragment
         }
     }

@@ -21,7 +21,7 @@
 
 
             <TextView
-                android:id="@+id/title_bill"
+                android:id="@+id/text_view_title_bill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_8dp"
@@ -43,7 +43,7 @@
                 android:textSize="@dimen/text_size_16sp"
                 android:textStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_bill"
+                app:layout_constraintTop_toBottomOf="@id/text_view_title_bill"
                 tools:text="@string/text_some_thing" />
 
             <TextView
@@ -72,7 +72,7 @@
                 app:layout_constraintTop_toBottomOf="@id/text_view_time_confirm" />
 
             <TextView
-                android:id="@+id/title_total_money"
+                android:id="@+id/text_view_title_total_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_12dp"

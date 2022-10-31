@@ -24,20 +24,21 @@ class ListAdapterBillDelivery(
         override fun binView(item: Bill) {
             super.binView(item)
             binding.apply {
-                titleBill.text = binding.root.context.getString(
+                val context = binding.root.context
+                textViewTitleBill.text = binding.root.context.getString(
                     R.string.text_title_bill,
                     item.id, item.createdAt
                 )
-                contentBill.text = binding.root.context.getString(
+                textViewContentBill.text = context.getString(
                     R.string.text_content_bill,
                     item.orderLines[Constants.FIRST_POSITION].book.title,
                     item.totalItem()
                 )
-                textViewTimeConfirm.text = binding.root.context.getString(
+                textViewTimeConfirm.text = context.getString(
                     R.string.text_time_confirm,
                     item.getTimeConfirmed()
                 )
-                textViewTimeDelivery.text = binding.root.context.getString(
+                textViewTimeDelivery.text = context.getString(
                     R.string.text_time_delivery,
                     item.getTimeDelivery()
                 )

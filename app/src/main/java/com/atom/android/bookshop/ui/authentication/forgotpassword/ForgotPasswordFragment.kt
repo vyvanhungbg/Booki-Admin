@@ -21,8 +21,7 @@ class ForgotPasswordFragment :
         ForgotPasswordPresenter.getInstance(
             ForgotPasswordRepository.getInstance(
                 ForgotPasswordRemoteDataSource.getInstance()
-            ),
-            this
+            )
         )
     }
 
@@ -56,7 +55,7 @@ class ForgotPasswordFragment :
     }
 
     override fun initData() {
-        // TODO implement later
+        forgotPresenter.setView(this)
     }
 
     override fun initView() {
@@ -80,7 +79,6 @@ class ForgotPasswordFragment :
     }
 
     override fun requestFailed(message: String?) {
-
         context?.toast(message)
     }
 

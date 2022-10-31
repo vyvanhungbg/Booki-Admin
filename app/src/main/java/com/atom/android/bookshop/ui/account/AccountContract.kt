@@ -11,7 +11,7 @@ class AccountContract {
         fun getUserFailed(message: String?)
     }
 
-    interface Presenter : BasePresenter<LoginContract.View> {
+    interface Presenter : BasePresenter<AccountContract.View> {
         fun getUser(context: Context?)
         fun destroyToken(context: Context?)
     }

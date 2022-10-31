@@ -17,76 +17,41 @@ class ListAdapterBillSuccess(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Bill> {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemBillSuccessBinding.inflate(inflater, parent, false)
-        val titleBill = { idBill: Int, time: String ->
-            parent.context.getString(
-                R.string.text_title_bill,
-                idBill,
-                time
-            )
-        }
-
-        val contentBill = { nameOfFistBook: String, totalItem: Int ->
-            parent.context.getString(
-                R.string.text_content_bill,
-                nameOfFistBook,
-                totalItem
-            )
-        }
-
-        val timeConfirm = { timeConfirm: String ->
-            parent.context.getString(
-                R.string.text_time_confirm,
-                timeConfirm
-            )
-        }
-
-        val timeDelivery = { timeDelivery: String ->
-            parent.context.getString(
-                R.string.text_time_delivery,
-                timeDelivery
-            )
-        }
-
-        val timeDone = { timeDone: String ->
-            parent.context.getString(
-                R.string.text_time_done,
-                timeDone
-            )
-        }
-
-        return ViewHolder(
-            binding,
-            titleBill,
-            contentBill,
-            timeConfirm,
-            timeDelivery,
-            timeDone
-        )
+        return ViewHolder(binding)
     }
 
 
     inner class ViewHolder(
         val binding: ItemBillSuccessBinding,
-        val titleBill: (Int, String) -> String,
-        val contentBill: (String, Int) -> String,
-        val timeConfirm: (String) -> String,
-        val timeDelivery: (String) -> String,
-        val timeDone: (String) -> String,
     ) :
         BaseViewHolder<Bill>(binding) {
         override fun binView(item: Bill) {
             super.binView(item)
             binding.apply {
-                titleBill.text = titleBill(item.id, item.createdAt)
-                contentBill.text =
-                    contentBill(
+                val context = root.context
+                textViewTitleBill.text = context.getString(
+                    R.string.text_title_bill,
+                    item.id, item.createdAt
+                )
+                textViewContentBill.text =
+                    context.getString(
+                        R.string.text_content_bill,
                         item.orderLines[Constants.FIRST_POSITION].book.title,
                         item.totalItem()
                     )
-                textViewTimeConfirm.text = timeConfirm(item.getTimeConfirmed())
-                textViewTimeDelivery.text = timeDelivery(item.getTimeDelivery())
-                textViewTimeDone.text = timeDone(item.getTimeDone())
-                titleTotalMoney.text = item.totalBill().toString().convertStrToMoney()
+                textViewTimeConfirm.text = context.getString(
+                    R.string.text_time_confirm,
+                    item.getTimeConfirmed()
+                )
+                textViewTimeDelivery.text = context.getString(
+                    R.string.text_time_delivery,
+                    item.getTimeDelivery()
+                )
+                textViewTimeDone.text = context.getString(
+                    R.string.text_time_done,
+                    item.getTimeDone()
+                )
+                textViewTitleTotalMoney.text = item.totalBill().toString().convertStrToMoney()
                 textViewDetail.setOnClickListener {
                     onClick(item)
                 }

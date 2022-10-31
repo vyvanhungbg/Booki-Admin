@@ -13,21 +13,24 @@ import com.atom.android.bookshop.data.source.remote.api.ApiConstants
 import com.atom.android.bookshop.data.source.remote.discount.DiscountRemoteDataSource
 import com.atom.android.bookshop.databinding.FragmentDiscountBinding
 import com.atom.android.bookshop.ui.discount.adddiscount.CreateDiscountFragment
+import com.atom.android.bookshop.utils.Constants.DEFAULT_PAGE
+import com.atom.android.bookshop.utils.SharedPreferenceUtils
 import com.atom.android.bookshop.utils.navigate
+import com.atom.android.bookshop.utils.toast
 
 typealias DefaultSource = com.google.android.material.R.layout
 
 class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountBinding::inflate),
     DiscountContract.View {
 
-    private var currentPage = 1
+    private var currentPage = DEFAULT_PAGE
     private var type = ApiConstants.TYPEOFDISCOUNT.RUNNING
     private val discountPresenter by lazy {
         DiscountPresenter.getInstance(
             DiscountRepository.getInstance(
                 DiscountRemoteDataSource.getInstance()
             ),
-            this
+            SharedPreferenceUtils.getInstance(context)
         )
     }
 
@@ -36,7 +39,7 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
     }
 
     override fun initData() {
-        //discountPresenter.getDiscount(context, currentPage, type);
+        discountPresenter.setView(this)
     }
 
 
@@ -71,7 +74,7 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
                     p3: Long
                 ) {
                     type = position
-                    currentPage = 1
+                    currentPage = DEFAULT_PAGE
                     listAdapter.submitList(mutableListOf())
                     discountPresenter.getDiscount(context, currentPage, type)
                 }
@@ -83,6 +86,11 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
         binding?.imgAdd?.setOnClickListener {
             val fragment = CreateDiscountFragment()
             activity?.navigate(fragment)
+        }
+        binding?.refreshLayout?.setOnRefreshListener {
+            currentPage = DEFAULT_PAGE
+            listAdapter.submitList(mutableListOf())
+            discountPresenter.getDiscount(context, currentPage, type)
         }
     }
 
@@ -101,10 +109,13 @@ class DiscountFragment : BaseFragment<FragmentDiscountBinding>(FragmentDiscountB
                 recyclerviewDiscount.isVisible = true
             }
         }
+        binding?.refreshLayout?.isRefreshing = false;
     }
 
     override fun getDiscountFailed(message: String?) {
+        context?.toast(message)
         visibleError()
+        binding?.refreshLayout?.isRefreshing = false;
     }
 
     private fun visibleError() {

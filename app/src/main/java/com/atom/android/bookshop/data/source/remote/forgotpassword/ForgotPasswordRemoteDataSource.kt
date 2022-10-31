@@ -39,7 +39,8 @@ class ForgotPasswordRemoteDataSource : IForgotPasswordDataSource.Remote {
                 dataFormEmail,
                 ApiURL.pathForgotEmail(),
                 ApiConstants.Method.POST,
-                token
+                token,
+                ApiConstants.ATTRIBUTE.APPLICATION_JSON_FORM
             )
         )
         try {

@@ -61,7 +61,8 @@ fun httpConnectionSendFormData(
     formData: String?,
     uri: String,
     method: String = ApiConstants.Method.GET,
-    token: String? = null
+    token: String? = null,
+    typeBody: String = ApiConstants.ATTRIBUTE.APPLICATION_JSON
 ): String {
     val content = StringBuilder("")
     var connection: HttpURLConnection? = null
@@ -73,7 +74,7 @@ fun httpConnectionSendFormData(
             requestMethod = method
             setRequestProperty(
                 ApiConstants.ATTRIBUTE.CONTENT_TYPE,
-                ApiConstants.ATTRIBUTE.APPLICATION_JSON
+                typeBody
             )
             setRequestProperty(
                 ApiConstants.ATTRIBUTE.ACCEPT,

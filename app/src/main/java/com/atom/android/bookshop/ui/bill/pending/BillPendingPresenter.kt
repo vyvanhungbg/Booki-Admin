@@ -2,6 +2,7 @@ package com.atom.android.bookshop.ui.bill.pending
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.widget.EditText
 import com.atom.android.bookshop.R
 import com.atom.android.bookshop.data.model.Bill
@@ -10,34 +11,34 @@ import com.atom.android.bookshop.data.source.remote.IRequestCallback
 import com.atom.android.bookshop.data.source.remote.ResponseObject
 import com.atom.android.bookshop.data.source.remote.api.ApiConstants
 import com.atom.android.bookshop.utils.Constants
-import com.atom.android.bookshop.utils.SharedPreferenceUtils
 import com.atom.android.bookshop.utils.getTokenLogin
 
 class BillPendingPresenter(
     private val repository: BillRepository,
-    private val view: BillPendingContract.View
+    private val sharedPreferences: SharedPreferences?
 ) : BillPendingContract.Presenter {
 
+    private var view: BillPendingContract.View? = null
     override fun getBillPending(context: Context?, page: Int) {
-        val token = SharedPreferenceUtils.getInstance(context)?.getTokenLogin()
+        val token = sharedPreferences?.getTokenLogin()
         repository.getBill(
             token,
             page,
             ApiConstants.TYPEOFBILL.PENDING,
             object : IRequestCallback<ResponseObject<List<Bill>>> {
                 override fun onSuccess(responseObject: ResponseObject<List<Bill>>) {
-                    view.getBillPendingSuccess(responseObject.data as List<Bill>)
+                    view?.getBillPendingSuccess(responseObject.data as List<Bill>)
                 }
 
                 override fun onFailed(message: String?) {
-                    view.getBillPendingFailed(message)
+                    view?.getBillPendingFailed(message)
                 }
 
             })
     }
 
     override fun confirmBill(context: Context?, bill: Bill) {
-        val token = SharedPreferenceUtils.getInstance(context)?.getTokenLogin()
+        val token = sharedPreferences?.getTokenLogin()
         repository.updateStatusBill(
             token,
             bill.id,
@@ -45,7 +46,7 @@ class BillPendingPresenter(
             reason = Constants.DEFAULT_STRING,
             object : IRequestCallback<ResponseObject<Bill>> {
                 override fun onSuccess(responseObject: ResponseObject<Bill>) {
-                    view.requestSuccess(
+                    view?.requestSuccess(
                         bill,
                         responseObject.data as Bill,
                         context?.getString(R.string.text_confirm_success, bill.id)
@@ -53,7 +54,7 @@ class BillPendingPresenter(
                 }
 
                 override fun onFailed(message: String?) {
-                    view.requestFailed(context?.getString(R.string.text_confirm_failed))
+                    view?.requestFailed(context?.getString(R.string.text_confirm_failed, message))
                 }
             })
     }
@@ -81,12 +82,16 @@ class BillPendingPresenter(
 
     }
 
+    override fun setView(view: BillPendingContract.View) {
+        this.view = view
+    }
+
     private fun requestDestroyBill(
         context: Context?,
         bill: Bill,
         reasonForDestroy: String?
     ) {
-        val token = SharedPreferenceUtils.getInstance(context)?.getTokenLogin()
+        val token = sharedPreferences?.getTokenLogin()
         repository.updateStatusBill(
             token,
             bill.id,
@@ -94,7 +99,7 @@ class BillPendingPresenter(
             reasonForDestroy,
             object : IRequestCallback<ResponseObject<Bill>> {
                 override fun onSuccess(responseObject: ResponseObject<Bill>) {
-                    view.requestSuccess(
+                    view?.requestSuccess(
                         bill,
                         newBill = null,
                         context?.getString(R.string.text_destroy_success, bill.id)
@@ -102,7 +107,7 @@ class BillPendingPresenter(
                 }
 
                 override fun onFailed(message: String?) {
-                    view.requestFailed(context?.getString(R.string.text_destroy_failed))
+                    view?.requestFailed(context?.getString(R.string.text_destroy_failed, message))
                 }
             })
     }
@@ -111,10 +116,10 @@ class BillPendingPresenter(
         private var instance: BillPendingPresenter? = null
         fun getInstance(
             repository: BillRepository,
-            view: BillPendingContract.View
+            sharedPreferences: SharedPreferences?
         ) = synchronized(this) {
-            instance ?: BillPendingPresenter(repository, view).also {
-                instance = it
+            this.instance ?: BillPendingPresenter(repository, sharedPreferences).also {
+                this.instance = it
             }
         }
     }

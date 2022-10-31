@@ -1,8 +1,6 @@
 package com.atom.android.bookshop.ui.main
 
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.atom.android.bookshop.R
@@ -26,21 +24,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         MainPresenter.getInstance(
             MainRepository.getInstance(
                 MainRemoteDataSource.getInstance()
-            ),
-            this
+            )
         )
     }
 
     override fun initView() {
         setUpNav()
-        registerNetwork(
-            this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
-            onConnectedInternet = {  },
-            onLostInternet = { showAlertDialogNetwork() }
-        )
     }
 
     override fun initData() {
+        mainPresenter.setView(this)
         mainPresenter.checkToken(this)
     }
 

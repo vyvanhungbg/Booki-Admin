@@ -1,6 +1,7 @@
 package com.atom.android.bookshop.ui.bill.delivery
 
 import android.content.Context
+import com.atom.android.bookshop.base.BasePresenter
 import com.atom.android.bookshop.data.model.Bill
 
 class BillDeliveryContract {
@@ -11,7 +12,7 @@ class BillDeliveryContract {
         fun requestSuccess(oldBill: Bill, newBill: Bill?, message: String?)
     }
 
-    interface Presenter {
+    interface Presenter :BasePresenter<BillDeliveryContract.View> {
         fun getBillDelivery(context: Context?, currentPage: Int)
         fun confirmDeliveryBill(context: Context?, bill: Bill)
         fun requestDestroyBill(

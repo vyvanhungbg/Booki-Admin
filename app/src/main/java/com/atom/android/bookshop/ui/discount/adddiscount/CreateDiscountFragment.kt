@@ -8,9 +8,9 @@ import com.atom.android.bookshop.data.model.DiscountEntity
 import com.atom.android.bookshop.data.repository.DiscountRepository
 import com.atom.android.bookshop.data.source.remote.discount.DiscountRemoteDataSource
 import com.atom.android.bookshop.databinding.FragmentCreateDiscountBinding
-import com.atom.android.bookshop.ui.discount.DiscountFragment
 import com.atom.android.bookshop.ui.main.MainActivity
 import com.atom.android.bookshop.utils.Constants
+import com.atom.android.bookshop.utils.SharedPreferenceUtils
 import com.atom.android.bookshop.utils.convertDataTimeToInstant
 import com.atom.android.bookshop.utils.convertInstantToString
 import com.atom.android.bookshop.utils.pickDateTime
@@ -27,7 +27,8 @@ class CreateDiscountFragment :
     private var timeEnd: String? = null
     private val createDiscountPresenter by lazy {
         CreateDiscountPresenter.getInstance(
-            DiscountRepository.getInstance(DiscountRemoteDataSource.getInstance())
+            DiscountRepository.getInstance(DiscountRemoteDataSource.getInstance()),
+            SharedPreferenceUtils.getInstance(context)
         )
     }
     private val progessBar by lazy {

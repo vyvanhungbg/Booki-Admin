@@ -4,10 +4,7 @@
     <string name="title_discount">Mã voucher</string>
     <string name="title_bill">Đơn hàng</string>
     <string name="title_account">Tài khoản</string>
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
     <string name="error_call_api">Có lỗi xảy ra vui lòng thử lại!</string>
     <string name="text_login_now">đăng nhập\nngay</string>
     <string name="text_password">Mật khẩu</string>
@@ -38,9 +35,9 @@
     <string name="text_title_bill"># %d | Đặt hàng lúc %s</string>
     <string name="text_content_bill">%s ..(%d sản phẩm)</string>
     <string name="text_content_discount">Mã %s</string>
-    <string name="text_confirm_failed">Xác nhận đơn hàng thất bại</string>
+    <string name="text_confirm_failed">Xác nhận đơn hàng thất bại (%s)</string>
     <string name="text_confirm_success">Xác nhận đơn hàng mã %d thành công</string>
-    <string name="text_destroy_failed">Hủy bỏ đơn hàng thất bại</string>
+    <string name="text_destroy_failed">Hủy bỏ đơn hàng thất bại (%s)</string>
     <string name="text_destroy_success">Đơn hủy đơn hàng mã %d</string>
     <string name="text_delivery_success">Xác nhận đơn hàng mã %d được vận chuyển</string>
     <string name="text_bill_delivery_done_success">Xác nhận đơn hàng mã %d giao thành công</string>
@@ -100,6 +97,4 @@
     <string name="title_alert_lost_network">Lỗi mạng</string>
     <string name="mess_alert_lost_network">Bạn đã mất kết nối mạng !</string>
     <string name="text_connected_internet">Đã kết nối mạng</string>
-
-
 </resources>

@@ -10,7 +10,7 @@ class MainContract {
         fun checkTokenFailed(message: String?)
     }
 
-    interface Presenter : BasePresenter<LoginContract.View> {
+    interface Presenter : BasePresenter<MainContract.View> {
         fun checkToken(context: Context?)
     }
 }

@@ -13,6 +13,7 @@ import com.atom.android.bookshop.ui.bill.BillFragment
 import com.atom.android.bookshop.ui.bill.delivery.BillDeliveryPresenter.Companion.INDEX_OF_ITEM_LOST
 import com.atom.android.bookshop.ui.bill.detail.BillDetailFragment
 import com.atom.android.bookshop.utils.Constants
+import com.atom.android.bookshop.utils.SharedPreferenceUtils
 import com.atom.android.bookshop.utils.navigate
 import com.atom.android.bookshop.utils.toast
 
@@ -26,7 +27,7 @@ class BillDeliveryFragment :
             BillRepository.getInstance(
                 BillRemoteDataSource.getInstance()
             ),
-            this
+            SharedPreferenceUtils.getInstance(context)
         )
     }
 
@@ -69,6 +70,7 @@ class BillDeliveryFragment :
     }
 
     override fun initData() {
+        billDeliveryPresenter.setView(this)
         billDeliveryPresenter.getBillDelivery(context, currentPage)
     }
 
@@ -82,29 +84,36 @@ class BillDeliveryFragment :
             binding?.progressLoadingMore?.isVisible = true
             billDeliveryPresenter.getBillDelivery(context, currentPage)
         }
+        binding?.swiperefreshlayout?.setOnRefreshListener {
+            currentPage = Constants.DEFAULT_PAGE
+            listAdapter.submitList(mutableListOf())
+            billDeliveryPresenter.getBillDelivery(context, currentPage)
+        }
     }
 
     override fun getBillDeliverySuccess(bill: List<Bill>) {
         if (listAdapter.currentList.isEmpty() && bill.isEmpty()) {
-            visibleError()
+            visibleScreen(true)
         } else {
             val newList = listAdapter.currentList.toMutableList()
             newList.addAll(bill)
             listAdapter.submitList(newList)
-            binding?.progressLoadingMore?.isVisible = false
+            visibleScreen(false)
         }
     }
 
-    private fun visibleError() {
+    private fun visibleScreen(isError: Boolean) {
         binding?.apply {
-            textViewGetBillFailed?.isVisible = true
-            recyclerviewBillDelivery?.isVisible = false
-            progressLoadingMore?.isVisible = false
+            textViewGetBillFailed.isVisible = isError
+            recyclerviewBillDelivery.isVisible = !isError
+            progressLoadingMore.isVisible = false
+            swiperefreshlayout.isRefreshing = false
         }
     }
 
     override fun getBillDeliveryFailed(message: String?) {
-        visibleError()
+        context?.toast(message)
+        visibleScreen(true)
         binding?.textViewGetBillFailed?.text = context?.getString(R.string.text_get_bill_failed)
     }
 
@@ -121,10 +130,12 @@ class BillDeliveryFragment :
         newList.remove(oldBill)
         listAdapter.submitList(newList)
         context?.toast(message)
+        visibleScreen(false)
     }
 
     fun updateNewBill(bill: Bill) {
         listAdapter.addItem(bill)
+        visibleScreen(false)
     }
 
     companion object {

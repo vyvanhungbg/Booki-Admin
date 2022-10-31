@@ -2,6 +2,7 @@ package com.atom.android.bookshop.ui.bill.confirm
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.widget.EditText
 import com.atom.android.bookshop.R
 import com.atom.android.bookshop.data.model.Bill
@@ -16,29 +17,31 @@ import com.atom.android.bookshop.utils.getTokenLogin
 
 class BillConfirmPresenter(
     private val repository: BillRepository,
-    private val view: BillConfirmContract.View
+    private val sharedPreference: SharedPreferences?
 ) : BillConfirmContract.Presenter {
 
+    private var view: BillConfirmContract.View? = null
+
     override fun getBillConfirm(context: Context?, currentPage: Int) {
-        val token = SharedPreferenceUtils.getInstance(context)?.getTokenLogin()
+        val token = sharedPreference?.getTokenLogin()
         repository.getBill(
             token,
             currentPage,
             ApiConstants.TYPEOFBILL.ACCEPT,
             object : IRequestCallback<ResponseObject<List<Bill>>> {
                 override fun onSuccess(responseObject: ResponseObject<List<Bill>>) {
-                    view.getBillConfirmSuccess(responseObject.data as List<Bill>)
+                    view?.getBillConfirmSuccess(responseObject.data as List<Bill>)
                 }
 
                 override fun onFailed(message: String?) {
-                    view.getBillConfirmFailed(message)
+                    view?.getBillConfirmFailed(message)
                 }
 
             })
     }
 
     override fun confirmShippingBill(context: Context?, bill: Bill) {
-        val token = SharedPreferenceUtils.getInstance(context)?.getTokenLogin()
+        val token = sharedPreference?.getTokenLogin()
         repository.updateStatusBill(
             token,
             bill.id,
@@ -46,7 +49,7 @@ class BillConfirmPresenter(
             reason = Constants.DEFAULT_STRING,
             object : IRequestCallback<ResponseObject<Bill>> {
                 override fun onSuccess(responseObject: ResponseObject<Bill>) {
-                    view.requestSuccess(
+                    view?.requestSuccess(
                         bill,
                         responseObject.data as Bill,
                         context?.getString(R.string.text_delivery_success, bill.id)
@@ -54,7 +57,7 @@ class BillConfirmPresenter(
                 }
 
                 override fun onFailed(message: String?) {
-                    view.requestFailed(context?.getString(R.string.text_confirm_failed))
+                    view?.requestFailed(context?.getString(R.string.text_confirm_failed, message))
                 }
             })
     }
@@ -81,6 +84,10 @@ class BillConfirmPresenter(
 
     }
 
+    override fun setView(view: BillConfirmContract.View) {
+        this.view = view
+    }
+
     private fun requestDestroyBill(
         context: Context?,
         bill: Bill,
@@ -94,7 +101,7 @@ class BillConfirmPresenter(
             reasonForDestroy,
             object : IRequestCallback<ResponseObject<Bill>> {
                 override fun onSuccess(responseObject: ResponseObject<Bill>) {
-                    view.requestSuccess(
+                    view?.requestSuccess(
                         bill,
                         newBill = null,
                         context?.getString(R.string.text_destroy_success, bill.id)
@@ -103,20 +110,18 @@ class BillConfirmPresenter(
                 }
 
                 override fun onFailed(message: String?) {
-                    view.requestFailed(context?.getString(R.string.text_destroy_failed))
+                    view?.requestFailed(context?.getString(R.string.text_destroy_failed, message))
                 }
             })
     }
 
     companion object {
         private var instance: BillConfirmPresenter? = null
-        fun getInstance(
-            repository: BillRepository,
-            view: BillConfirmContract.View
-        ) = synchronized(this) {
-            instance ?: BillConfirmPresenter(repository, view).also {
-                instance = it
+        fun getInstance(repository: BillRepository, sharedPreference: SharedPreferences?) =
+            synchronized(this) {
+                instance ?: BillConfirmPresenter(repository, sharedPreference).also {
+                    instance = it
+                }
             }
-        }
     }
 }

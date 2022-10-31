@@ -1,47 +1,50 @@
 package com.atom.android.bookshop.ui.discount
 
 import android.content.Context
-import com.atom.android.bookshop.data.model.Bill
+import android.content.SharedPreferences
 import com.atom.android.bookshop.data.model.Discount
-import com.atom.android.bookshop.data.model.DiscountEntity
 import com.atom.android.bookshop.data.repository.DiscountRepository
 import com.atom.android.bookshop.data.source.remote.IRequestCallback
 import com.atom.android.bookshop.data.source.remote.ResponseObject
-import com.atom.android.bookshop.data.source.remote.api.ApiConstants
-import com.atom.android.bookshop.utils.SharedPreferenceUtils
 import com.atom.android.bookshop.utils.getTokenLogin
 
 class DiscountPresenter(
     private val repository: DiscountRepository,
-    private val view: DiscountContract.View
+    private val sharedPreferences: SharedPreferences?
 ) : DiscountContract.Presenter {
 
+    private var view: DiscountContract.View? = null
+
     override fun getDiscount(context: Context?, currentPage: Int, type: Int) {
-        val token = SharedPreferenceUtils.getInstance(context)?.getTokenLogin()
+        val token = sharedPreferences?.getTokenLogin()
         repository.getDiscount(
             token,
             currentPage,
             type,
             object : IRequestCallback<ResponseObject<List<Discount>>> {
                 override fun onSuccess(responseObject: ResponseObject<List<Discount>>) {
-                    view.getDiscountSuccess(responseObject.data as List<Discount>)
+                    view?.getDiscountSuccess(responseObject.data as List<Discount>)
                 }
 
                 override fun onFailed(message: String?) {
-                    view.getDiscountFailed(message)
+                    view?.getDiscountFailed(message)
                 }
 
             })
+    }
+
+    fun setView(view: DiscountContract.View) {
+        this.view = view
     }
 
     companion object {
         private var instance: DiscountPresenter? = null
         fun getInstance(
             repository: DiscountRepository,
-            view: DiscountContract.View
+            sharedPreferences: SharedPreferences?,
         ) = synchronized(this) {
-            instance ?: DiscountPresenter(repository, view).also {
-                instance = it
+            this.instance ?: DiscountPresenter(repository, sharedPreferences).also {
+                this.instance = it
             }
         }
     }

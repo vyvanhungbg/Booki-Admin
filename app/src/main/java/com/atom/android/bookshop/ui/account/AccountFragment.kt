@@ -2,6 +2,7 @@ package com.atom.android.bookshop.ui.account
 
 import android.content.Intent
 import androidx.core.net.toUri
+import com.atom.android.bookshop.R
 import com.atom.android.bookshop.base.BaseFragment
 import com.atom.android.bookshop.data.model.User
 import com.atom.android.bookshop.data.repository.AccountRepository
@@ -9,19 +10,21 @@ import com.atom.android.bookshop.data.source.remote.account.AccountRemoteDataSou
 import com.atom.android.bookshop.databinding.FragmentAccountBinding
 import com.atom.android.bookshop.ui.authentication.AuthenticationActivity
 import com.atom.android.bookshop.utils.loadUserImage
+import com.atom.android.bookshop.utils.toast
 
 class AccountFragment : BaseFragment<FragmentAccountBinding>(FragmentAccountBinding::inflate),
     AccountContract.View {
+
     private val accountPresenter by lazy {
         AccountPresenter.getInstance(
             AccountRepository.getInstance(
                 AccountRemoteDataSource.getInstance()
-            ),
-            this
+            )
         )
     }
 
     override fun initData() {
+        accountPresenter.setView(this)
         accountPresenter.getUser(context)
     }
 
@@ -31,7 +34,6 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(FragmentAccountBind
     }
 
     override fun initEvent() {
-        // TODO implement later
         binding?.btnLogout?.setOnClickListener {
             accountPresenter.destroyToken(context)
             navigateAuthenticationActivity()
@@ -50,6 +52,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(FragmentAccountBind
     }
 
     override fun getUserFailed(message: String?) {
-        // TODO implement later
+        context?.toast(message)
+        binding?.btnLogout?.text = getString(R.string.text_login)
     }
 }
